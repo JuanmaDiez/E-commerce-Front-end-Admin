@@ -3,16 +3,23 @@ import adminReducer from "./adminSlice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
+import allAdminReducer from "./allAdminsSlice";
+import productReducer from "./productsSlice";
 
 const persistConfig = {
   key: "root",
   storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, adminReducer);
+const rootReducer = combineReducers({
+  admin: adminReducer,
+  allAdmin: allAdminReducer,
+  product: productReducer,
+});
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: { admin: persistedReducer },
+  reducer: persistedReducer,
   middleware: [thunk],
 });
 
