@@ -37,6 +37,7 @@ function Login() {
             type="email"
             onChange={(event) => setEmail(event.target.value)}
             className={`${styles.logInInput} form-control`}
+            name="email"
           />
         </div>
         <div className="form-group">
@@ -45,6 +46,7 @@ function Login() {
             type="password"
             onChange={(event) => setPassword(event.target.value)}
             className={`${styles.logInInput} form-control`}
+            name="password"
           />
         </div>
         <div

@@ -9,7 +9,7 @@ const allAdminSlice = createSlice({
     },
     delete_admin(state, action) {
       return state.filter((admin) => {
-        return admin.id !== action.payload;
+        return admin._id !== action.payload;
       });
     },
     empty_admins(state, action) {

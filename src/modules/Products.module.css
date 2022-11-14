@@ -4,3 +4,6 @@
 .editButton {
   margin-right: 5px;
 }
+.modalContainer {
+  position: absolute;
+}
