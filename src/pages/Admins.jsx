@@ -12,7 +12,7 @@ function Admins() {
   useEffect(() => {
     const getAdmins = async () => {
       const response = await axios({
-        url: "http://localhost:8000/admins",
+        url: `${process.env.REACT_APP_API_URL}/admins`,
         method: "GET",
       });
 
@@ -24,7 +24,7 @@ function Admins() {
   const handleClick = async (id) => {
     dispatch(delete_admin(id));
     await axios({
-      url: `http://localhost:8000/admins/${id}`,
+      url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
       method: "DELETE",
     });
   };

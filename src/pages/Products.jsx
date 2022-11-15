@@ -16,7 +16,7 @@ function Products() {
   useEffect(() => {
     const getProducts = async () => {
       const response = await axios({
-        url: "http://localhost:8000/products",
+        url: `${process.env.REACT_APP_API_URL}/products`,
         method: "GET",
       });
       dispatch(call_products(response.data));
@@ -27,7 +27,7 @@ function Products() {
   const handleClick = async (id) => {
     dispatch(delete_product(id));
     await axios({
-      url: `http://localhost:8000/products/${id}`,
+      url: `${process.env.REACT_APP_API_URL}/products/${id}`,
       method: "DELETE",
     });
   };
