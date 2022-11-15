@@ -13,7 +13,7 @@ function EditProduct() {
   useEffect(() => {
     const getProduct = async () => {
       const response = await axios({
-        url: `http://localhost:8000/product/${params.id}`,
+        url: `http://localhost:8000/products/${params.id}`,
         method: "GET",
       });
       setProduct(response.data);
@@ -25,6 +25,13 @@ function EditProduct() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     navigate("/products");
+    const formData = new FormData(event.target);
+    await axios({
+      url: `http://localhost:8000/products/${product._id}`,
+      method: "PATCH",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   };
 
   return (
@@ -42,6 +49,7 @@ function EditProduct() {
                 type="text"
                 className={`form-control`}
                 defaultValue={product.name}
+                name="name"
               />
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
@@ -49,6 +57,7 @@ function EditProduct() {
               <textarea
                 className={`form-control`}
                 defaultValue={product.description}
+                name="description"
               ></textarea>
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
@@ -57,19 +66,21 @@ function EditProduct() {
                 type="text"
                 className={`form-control`}
                 defaultValue={product.category}
+                name="category"
               />
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
               <label htmlFor="">Image</label>
-              <input type="file" className={`form-control`} />
-              <div className={`form-group ${styles.inputGroup}`}>
-                <label htmlFor="">Price</label>
-                <input
-                  type="number"
-                  className={`form-control`}
-                  defaultValue={product.price}
-                />
-              </div>
+              <input type="file" className={`form-control`} name="image" />
+            </div>
+            <div className={`form-group ${styles.inputGroup}`}>
+              <label htmlFor="">Price</label>
+              <input
+                type="number"
+                className={`form-control`}
+                defaultValue={product.price}
+                name="price"
+              />
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
               <label htmlFor="">Stock</label>
@@ -77,6 +88,7 @@ function EditProduct() {
                 type="number"
                 className={`form-control`}
                 defaultValue={product.stock}
+                name="stock"
               />
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
@@ -86,6 +98,7 @@ function EditProduct() {
                 checked={featured}
                 onChange={() => setFeatured(!featured)}
                 value={featured}
+                name="featuredProduct"
               />
             </div>
             <button type="submit" className="btn btn-success">
