@@ -18,6 +18,7 @@ function Home() {
     };
     getOrders();
   }, []);
+
   return (
     orders.length && (
       <div className="row">
@@ -27,7 +28,7 @@ function Home() {
         <div className={`col-10 ${styles.homeBody} p-0`}>
           {orders.map((order, index) => {
             return (
-              <div key={order._id}>
+              <div key={order._id} className="d-flex">
                 <p>{index}</p>
                 <p>{order.price}</p>
               </div>
