@@ -1,17 +1,41 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
 import styles from "../modules/Home.module.css";
+import { call_orders } from "../redux/ordersSlice";
 
 function Home() {
+  const orders = useSelector((state) => state.order);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getOrders = async () => {
+      const response = await axios({
+        url: "http://localhost:8000/orders",
+        method: "GET",
+      });
+      dispatch(call_orders(response.data));
+    };
+    getOrders();
+  }, []);
   return (
-    <div className="row">
-      <div className="col-2 p-0">
-        <SideBar />
+    orders.length && (
+      <div className="row">
+        <div className="col-2 p-0">
+          <SideBar />
+        </div>
+        <div className={`col-10 ${styles.homeBody} p-0`}>
+          {orders.map((order, index) => {
+            return (
+              <div key={order._id}>
+                <p>{index}</p>
+                <p>{order.price}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-      <div className={`col-10 ${styles.homeBody} p-0`}></div>
-    </div>
+    )
   );
 }
 

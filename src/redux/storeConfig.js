@@ -1,7 +1,8 @@
 import adminReducer from "./adminSlice";
 import allAdminReducer from "./allAdminsSlice";
 import productReducer from "./productsSlice";
-import buyHistoryReducer from "./buyHistorySlice";
+import orderReducer from "./orderSlice";
+import categoryReducer from "./categorySlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   admin: adminReducer,
-  buyHistory: buyHistoryReducer,
+  order: orderReducer,
+  category: categoryReducer,
   allAdmin: allAdminReducer,
   product: productReducer,
 });

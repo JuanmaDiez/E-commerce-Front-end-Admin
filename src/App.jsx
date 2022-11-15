@@ -16,6 +16,7 @@ function App() {
         <Route path="/products/edit/:id" element={<EditProduct />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/categories" element={<Categories />} />
       </Routes>
     </div>
   );

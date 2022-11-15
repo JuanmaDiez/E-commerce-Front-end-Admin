@@ -4,7 +4,7 @@ import { logout } from "../redux/adminSlice";
 import { empty_admins } from "../redux/allAdminsSlice";
 import { empty_products } from "../redux/productsSlice";
 import styles from "../modules/SideBar.module.css";
-import { empty_buy_history } from "../redux/buyHistorySlice";
+import { empty_orders } from "../redux/ordersSlice";
 
 function SideBar() {
   const admin = useSelector((state) => state.admin);
@@ -14,7 +14,8 @@ function SideBar() {
   const handleClick = () => {
     dispatch(empty_admins());
     dispatch(empty_products());
-    dispatch(empty_buy_history());
+    dispatch(empty_orders());
+    dispatch(empty_categories());
     dispatch(logout());
     navigate("/");
   };
@@ -33,6 +34,9 @@ function SideBar() {
         </Link>
         <Link to="/admins" className={styles.sidebarLink}>
           Admins
+        </Link>
+        <Link to="/categories" className={styles.sidebarLink}>
+          Categories
         </Link>
       </div>
       <div>
