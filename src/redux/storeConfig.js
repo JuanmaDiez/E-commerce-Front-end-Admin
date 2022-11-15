@@ -1,10 +1,11 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import adminReducer from "./adminSlice";
+import allAdminReducer from "./allAdminsSlice";
+import productReducer from "./productsSlice";
+import buyHistoryReducer from "./buyHistorySlice";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
-import allAdminReducer from "./allAdminsSlice";
-import productReducer from "./productsSlice";
 
 const persistConfig = {
   key: "root",
@@ -13,9 +14,11 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   admin: adminReducer,
+  buyHistory: buyHistoryReducer,
   allAdmin: allAdminReducer,
   product: productReducer,
 });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({

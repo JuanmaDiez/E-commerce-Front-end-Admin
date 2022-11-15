@@ -1,9 +1,23 @@
+import axios from "axios";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import styles from "../modules/CreateProduct.module.css";
+import { add_product } from "../redux/productsSlice";
 
 function CreateProduct({ display, setDisplay, setBlur }) {
+  const dispatch = useDispatch();
+  const [featured, setFeatured] = useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const response = await axios({
+      url: "http://localhost:8000/products",
+      method: "POST",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    dispatch(add_product(response.data));
     setBlur("blur(0px)");
     setDisplay("d-none");
   };
@@ -42,7 +56,13 @@ function CreateProduct({ display, setDisplay, setBlur }) {
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Featured</label>
-          <input type="checkbox" name="featured" />
+          <input
+            type="checkbox"
+            name="featuredProduct"
+            checked={featured}
+            value={featured}
+            onChange={() => setFeatured(!featured)}
+          />
         </div>
         <button type="submit" className="btn btn-success mt-1">
           Create

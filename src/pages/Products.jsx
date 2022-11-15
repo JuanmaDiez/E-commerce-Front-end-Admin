@@ -16,7 +16,7 @@ function Products() {
   useEffect(() => {
     const getProducts = async () => {
       const response = await axios({
-        url: "http://localhost:8000/product",
+        url: "http://localhost:8000/products",
         method: "GET",
       });
       dispatch(call_products(response.data));
@@ -25,15 +25,15 @@ function Products() {
   }, []);
 
   const handleClick = async (id) => {
+    dispatch(delete_product(id));
     await axios({
-      url: `http://localhost:8000/product/${id}`,
+      url: `http://localhost:8000/products/${id}`,
       method: "DELETE",
     });
-    dispatch(delete_product(id));
   };
 
   return (
-    products && (
+    products.length && (
       <div className="row">
         <div className="col-2">
           <SideBar />

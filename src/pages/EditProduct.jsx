@@ -8,6 +8,7 @@ function EditProduct() {
   const params = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
+  const [featured, setFeatured] = useState(null);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -16,13 +17,14 @@ function EditProduct() {
         method: "GET",
       });
       setProduct(response.data);
+      setFeatured(response.data.featuredProduct);
     };
     getProduct();
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    navigate("/");
+    navigate("/products");
   };
 
   return (
@@ -79,7 +81,12 @@ function EditProduct() {
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
               <label htmlFor="">Featured</label>
-              <input type="checkbox" checked={product.featured} />
+              <input
+                type="checkbox"
+                checked={featured}
+                onChange={() => setFeatured(!featured)}
+                value={featured}
+              />
             </div>
             <button type="submit" className="btn btn-success">
               Edit

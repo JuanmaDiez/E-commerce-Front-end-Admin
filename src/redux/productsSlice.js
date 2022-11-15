@@ -7,9 +7,12 @@ const productSlice = createSlice({
     call_products(state, action) {
       return action.payload;
     },
+    add_product(state, action) {
+      state.push(action.payload);
+    },
     delete_product(state, action) {
-      return state.filter((admin) => {
-        return admin.id !== action.payload;
+      return state.filter((product) => {
+        return product._id !== action.payload;
       });
     },
     empty_products(state, action) {
@@ -18,6 +21,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { call_products, delete_product, empty_products } =
+export const { call_products, add_product, delete_product, empty_products } =
   productSlice.actions;
 export default productSlice.reducer;

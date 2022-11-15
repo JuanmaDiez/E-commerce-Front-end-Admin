@@ -12,7 +12,7 @@ function Admins() {
   useEffect(() => {
     const getAdmins = async () => {
       const response = await axios({
-        url: "http://localhost:8000/admin",
+        url: "http://localhost:8000/admins",
         method: "GET",
       });
 
@@ -22,11 +22,11 @@ function Admins() {
   }, []);
 
   const handleClick = async (id) => {
+    dispatch(delete_admin(id));
     await axios({
-      url: `http://localhost:8000/admin/${id}`,
+      url: `http://localhost:8000/admins/${id}`,
       method: "DELETE",
     });
-    dispatch(delete_admin(id));
   };
 
   return (
