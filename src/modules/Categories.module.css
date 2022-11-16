@@ -1,3 +1,9 @@
 .categoryRow {
   border-bottom: solid 1px black;
 }
+.modalContainer {
+  position: absolute;
+}
+.createInput {
+  width: 20%;
+}

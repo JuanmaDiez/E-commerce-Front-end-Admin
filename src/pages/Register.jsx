@@ -69,7 +69,7 @@ function Register() {
           className={`d-flex justify-content-between ${styles.formParagraph} mt-2`}
         >
           <button type="submit" className="btn btn-dark pt-0 pb-0">
-            Log In
+            Register
           </button>
           <p className="mt-2">
             Already registered?

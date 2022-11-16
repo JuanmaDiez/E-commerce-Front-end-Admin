@@ -38,7 +38,17 @@ function CreateProduct({ display, setDisplay, setBlur }) {
   return (
     categories && (
       <div className={`${display} flex-column ${styles.createContainer} p-4`}>
-        <h5>Create product</h5>
+        <div className="d-flex justify-content-between">
+          <h5>Create product</h5>
+          <p
+            onClick={() => {
+              setBlur("blur(0px)");
+              setDisplay("d-none");
+            }}
+          >
+            <strong>X</strong>
+          </p>
+        </div>
         <form
           action=""
           onSubmit={(event) => handleSubmit(event)}
@@ -55,7 +65,7 @@ function CreateProduct({ display, setDisplay, setBlur }) {
           <div className={`form-group mt-1`}>
             <label htmlFor="">Category</label>
             <input type="hidden" name="category" value={category} />
-            <div className="d-flex justify-content-around" >
+            <div className="d-flex justify-content-around">
               {categories.map((category) => {
                 return (
                   <div key={category._id}>

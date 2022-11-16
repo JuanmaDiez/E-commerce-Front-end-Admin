@@ -7,6 +7,7 @@ import {
   call_categories,
   delete_category,
 } from "../redux/categorySlice";
+import EditCategory from "../components/EditCategory";
 import styles from "../modules/Categories.module.css";
 
 function Categories() {
@@ -15,6 +16,7 @@ function Categories() {
   const [display, setDisplay] = useState("d-none");
   const [blur, setBlur] = useState("null");
   const [name, setName] = useState("");
+  const [id, setId] = useState("");
 
   useEffect(() => {
     const getCategories = async () => {
@@ -36,7 +38,8 @@ function Categories() {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const response = await axios({
       url: `${process.env.REACT_APP_API_URL}/categories`,
       method: "POST",
@@ -61,8 +64,7 @@ function Categories() {
               >
                 <small>{index + 1}</small>
                 <p>
-                  <strong>Name:</strong> {category.firstname}
-                  {category.lastname}
+                  <strong>Name:</strong> {category.name}
                 </p>
                 <p>
                   <strong>Amount products:</strong> {category.products.length}
@@ -73,6 +75,7 @@ function Categories() {
                     onClick={() => {
                       setBlur("blur(8px)");
                       setDisplay("d-flex");
+                      setId(category._id);
                     }}
                   >
                     Edit
@@ -84,30 +87,38 @@ function Categories() {
                     Delete
                   </button>
                 </div>
-                <div
-                  className={`d-flex justify-content-center ${styles.modalContainer}`}
-                >
-                  <CreateProduct
-                    display={display}
-                    setDisplay={setDisplay}
-                    setBlur={setBlur}
-                    id={category._id}
-                  />
-                </div>
               </div>
             );
           })}
           <form action="" onSubmit={handleSubmit}>
-            <label htmlFor="">New product:</label>
-            <input
-              type="text"
-              name="name"
-              value={name}
-              onChange={(event) => {
-                setName(event.target.value);
-              }}
-            />
+            <div className="form-group mt-2">
+              <label htmlFor="">
+                <strong>New category</strong>
+              </label>
+              <input
+                type="text"
+                className={`form-control mt-2 ${styles.createInput}`}
+                name="name"
+                value={name}
+                onChange={(event) => {
+                  setName(event.target.value);
+                }}
+              />
+            </div>
+            <button type="submit" className={`btn btn-primary mt-2`}>
+              Create
+            </button>
           </form>
+        </div>
+        <div
+          className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
+        >
+          <EditCategory
+            display={display}
+            setDisplay={setDisplay}
+            setBlur={setBlur}
+            id={id}
+          />
         </div>
       </div>
     )

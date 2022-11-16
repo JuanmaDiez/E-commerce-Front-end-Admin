@@ -39,7 +39,18 @@ function Products() {
           <SideBar />
         </div>
         <div className="col-10" style={{ filter: `${blur}` }}>
-          <h5 className="m-3">Products</h5>
+          <div className="d-flex justify-content-between">
+            <h5 className="m-3">Products</h5>
+            <button
+              onClick={() => {
+                setDisplay("d-flex");
+                setBlur("blur(8px)");
+              }}
+              className="btn btn-primary m-3"
+            >
+              New Product
+            </button>
+          </div>
           {products.map((product, index) => {
             return (
               <div
@@ -75,17 +86,10 @@ function Products() {
               </div>
             );
           })}
-          <button
-            onClick={() => {
-              setDisplay("d-flex");
-              setBlur("blur(8px)");
-            }}
-            className="btn btn-primary mt-4"
-          >
-            New Product
-          </button>
         </div>
-        <div className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}>
+        <div
+          className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
+        >
           <CreateProduct
             display={display}
             setDisplay={setDisplay}
