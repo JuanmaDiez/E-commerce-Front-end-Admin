@@ -1,0 +1,12 @@
+.editContainer {
+  width: 60%;
+  position: relative;
+  background-color: #eaeaea;
+  top: 20px;
+  left: 100px;
+  border: solid 1px #eaeaea;
+  border-radius: 3px;
+}
+.modalContainer {
+  position: absolute;
+}

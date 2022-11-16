@@ -1,13 +1,20 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
-import { call_categories, delete_category } from "../redux/categorySlice";
+import {
+  add_category,
+  call_categories,
+  delete_category,
+} from "../redux/categorySlice";
 import styles from "../modules/Categories.module.css";
 
 function Categories() {
   const categories = useSelector((state) => state.category);
   const dispatch = useDispatch();
+  const [display, setDisplay] = useState("d-none");
+  const [blur, setBlur] = useState("null");
+  const [name, setName] = useState("");
 
   useEffect(() => {
     const getCategories = async () => {
@@ -29,13 +36,22 @@ function Categories() {
     });
   };
 
+  const handleSubmit = async () => {
+    const response = await axios({
+      url: `${process.env.REACT_APP_API_URL}/categories`,
+      method: "POST",
+      data: { name },
+    });
+    dispatch(add_category(response.data));
+  };
+
   return (
     categories && (
       <div className="row">
         <div className="col-2">
           <SideBar />
         </div>
-        <div className="col-10">
+        <div className="col-10" style={{ filter: `${blur}` }}>
           <h5 className="m-3">Categories list</h5>
           {categories.map((category, index) => {
             return (
@@ -45,21 +61,53 @@ function Categories() {
               >
                 <small>{index + 1}</small>
                 <p>
-                  <strong>Name:</strong> {category.firstname}{" "}
+                  <strong>Name:</strong> {category.firstname}
                   {category.lastname}
                 </p>
                 <p>
-                  <strong>Email:</strong> {category.email}
+                  <strong>Amount products:</strong> {category.products.length}
                 </p>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleClick(category._id)}
+                <div>
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => {
+                      setBlur("blur(8px)");
+                      setDisplay("d-flex");
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-danger ms-1"
+                    onClick={() => handleClick(category._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+                <div
+                  className={`d-flex justify-content-center ${styles.modalContainer}`}
                 >
-                  Delete
-                </button>
+                  <CreateProduct
+                    display={display}
+                    setDisplay={setDisplay}
+                    setBlur={setBlur}
+                    id={category._id}
+                  />
+                </div>
               </div>
             );
           })}
+          <form action="" onSubmit={handleSubmit}>
+            <label htmlFor="">New product:</label>
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value);
+              }}
+            />
+          </form>
         </div>
       </div>
     )
