@@ -12,7 +12,7 @@ function Categories() {
   useEffect(() => {
     const getCategories = async () => {
       const response = await axios({
-        url: "http://localhost:8000/categories",
+        url: `${process.env.REACT_APP_API_URL}/categories`,
         method: "GET",
       });
 
@@ -24,7 +24,7 @@ function Categories() {
   const handleClick = async (id) => {
     dispatch(delete_category(id));
     await axios({
-      url: `http://localhost:8000/categories/${id}`,
+      url: `${process.env.REACT_APP_API_URL}/categories/${id}`,
       method: "DELETE",
     });
   };
@@ -45,7 +45,8 @@ function Categories() {
               >
                 <small>{index + 1}</small>
                 <p>
-                  <strong>Name:</strong> {category.firstname} {category.lastname}
+                  <strong>Name:</strong> {category.firstname}{" "}
+                  {category.lastname}
                 </p>
                 <p>
                   <strong>Email:</strong> {category.email}

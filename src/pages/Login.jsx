@@ -14,7 +14,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await axios({
-      url: "http://localhost:8000/admin/login",
+      url: `${process.env.REACT_APP_API_URL}/admins/login`,
       method: "POST",
       data: { email, password },
     });

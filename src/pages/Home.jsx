@@ -8,10 +8,11 @@ import { call_orders } from "../redux/ordersSlice";
 function Home() {
   const orders = useSelector((state) => state.order);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     const getOrders = async () => {
       const response = await axios({
-        url: "http://localhost:8000/orders",
+        url: `${process.env.REACT_APP_API_URL}/orders`,
         method: "GET",
       });
       dispatch(call_orders(response.data));

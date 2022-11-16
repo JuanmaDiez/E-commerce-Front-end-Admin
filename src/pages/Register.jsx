@@ -13,7 +13,7 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await axios({
-      url: "http://localhost:8000/admin",
+      url: `${process.env.REACT_APP_API_URL}/admins`,
       method: "POST",
       data: { firstname, lastname, email, password },
     });

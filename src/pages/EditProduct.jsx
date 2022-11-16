@@ -13,7 +13,7 @@ function EditProduct() {
   useEffect(() => {
     const getProduct = async () => {
       const response = await axios({
-        url: `http://localhost:8000/products/${params.id}`,
+        url: `${process.env.REACT_APP_API_URL}/products/${params.id}`,
         method: "GET",
       });
       setProduct(response.data);
@@ -27,7 +27,7 @@ function EditProduct() {
     navigate("/products");
     const formData = new FormData(event.target);
     await axios({
-      url: `http://localhost:8000/products/${product._id}`,
+      url: `${process.env.REACT_APP_API_URL}/products/${product._id}`,
       method: "PATCH",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },

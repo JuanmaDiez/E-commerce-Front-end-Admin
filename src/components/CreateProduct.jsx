@@ -12,7 +12,7 @@ function CreateProduct({ display, setDisplay, setBlur }) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const response = await axios({
-      url: "http://localhost:8000/products",
+      url: `${process.env.REACT_APP_API_URL}/products`,
       method: "POST",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
