@@ -5,6 +5,7 @@ import { empty_admins } from "../redux/allAdminsSlice";
 import { empty_products } from "../redux/productsSlice";
 import styles from "../modules/SideBar.module.css";
 import { empty_orders } from "../redux/ordersSlice";
+import { empty_categories } from "../redux/categorySlice";
 
 function SideBar() {
   const admin = useSelector((state) => state.admin);

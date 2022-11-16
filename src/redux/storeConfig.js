@@ -1,7 +1,7 @@
 import adminReducer from "./adminSlice";
 import allAdminReducer from "./allAdminsSlice";
 import productReducer from "./productsSlice";
-import orderReducer from "./orderSlice";
+import orderReducer from "./ordersSlice";
 import categoryReducer from "./categorySlice";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";

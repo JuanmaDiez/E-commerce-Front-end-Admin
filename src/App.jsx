@@ -5,6 +5,7 @@ import Admins from "./pages/Admins";
 import Products from "./pages/Products";
 import EditProduct from "./pages/EditProduct";
 import Register from "./pages/Register";
+import Categories from "./pages/Categories";
 
 function App() {
   return (
