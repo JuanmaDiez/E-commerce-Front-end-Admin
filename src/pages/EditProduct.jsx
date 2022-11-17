@@ -9,6 +9,8 @@ function EditProduct() {
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [featured, setFeatured] = useState(null);
+  const [categories, setCategories] = useState(null);
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
     const getProduct = async () => {
@@ -18,7 +20,16 @@ function EditProduct() {
       });
       setProduct(response.data);
       setFeatured(response.data.featuredProduct);
+      setCategory(response.data.category);
     };
+    const getCategories = async () => {
+      const response = await axios({
+        url: `${process.env.REACT_APP_API_URL}/categories`,
+        method: "GET",
+      });
+      setCategories(response.data);
+    };
+    getCategories();
     getProduct();
   }, []);
 
@@ -35,7 +46,8 @@ function EditProduct() {
   };
 
   return (
-    product && (
+    product &&
+    categories && (
       <div className="row">
         <div className="col-2">
           <SideBar />
@@ -62,12 +74,19 @@ function EditProduct() {
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
               <label htmlFor="">Category</label>
-              <input
-                type="text"
-                className={`form-control`}
-                defaultValue={product.category}
-                name="category"
-              />
+              {categories.map((category) => {
+                return (
+                  <div key={category._id}>
+                    <label htmlFor="">{category.name}</label>
+                    <input
+                      type="radio"
+                      className="ms-2"
+                      value={category._id}
+                      name="category"
+                    />
+                  </div>
+                );
+              })}
             </div>
             <div className={`form-group ${styles.inputGroup}`}>
               <label htmlFor="">Image</label>

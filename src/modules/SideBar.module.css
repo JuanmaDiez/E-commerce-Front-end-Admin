@@ -4,6 +4,9 @@
   background-size: cover;
   background-repeat: no-repeat;
   padding-left: 2rem;
+  position: sticky;
+  left: 0px;
+  top: 0px;
 }
 .sidebarLink {
   color: white;

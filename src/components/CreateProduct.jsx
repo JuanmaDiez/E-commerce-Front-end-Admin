@@ -64,7 +64,6 @@ function CreateProduct({ display, setDisplay, setBlur }) {
           </div>
           <div className={`form-group mt-1`}>
             <label htmlFor="">Category</label>
-            <input type="hidden" name="category" value={category} />
             <div className="d-flex justify-content-around">
               {categories.map((category) => {
                 return (
@@ -73,7 +72,8 @@ function CreateProduct({ display, setDisplay, setBlur }) {
                     <input
                       type="radio"
                       className="ms-2"
-                      onClick={() => setCategory(category._id)}
+                      value={category._id}
+                      name="category"
                     />
                   </div>
                 );

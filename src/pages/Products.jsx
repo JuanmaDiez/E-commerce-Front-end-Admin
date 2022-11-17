@@ -34,7 +34,7 @@ function Products() {
 
   return (
     products.length && (
-      <div className="row">
+      <div className={`row ${styles.sidebarContainer}`}>
         <div className="col-2">
           <SideBar />
         </div>
