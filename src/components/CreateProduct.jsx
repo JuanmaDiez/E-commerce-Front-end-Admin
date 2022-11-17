@@ -8,7 +8,7 @@ function CreateProduct({ display, setDisplay, setBlur }) {
   const dispatch = useDispatch();
   const [featured, setFeatured] = useState(false);
   const [categories, setCategories] = useState(null);
-  const [category, setCategory] = useState("");
+ 
 
   useEffect(() => {
     const getCategories = async () => {

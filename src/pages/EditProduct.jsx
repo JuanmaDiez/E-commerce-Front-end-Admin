@@ -10,7 +10,7 @@ function EditProduct() {
   const [product, setProduct] = useState(null);
   const [featured, setFeatured] = useState(null);
   const [categories, setCategories] = useState(null);
-  const [category, setCategory] = useState(null);
+
 
   useEffect(() => {
     const getProduct = async () => {
