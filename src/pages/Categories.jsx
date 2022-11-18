@@ -23,7 +23,6 @@ function Categories() {
         url: `${process.env.REACT_APP_API_URL}/categories`,
         method: "GET",
       });
-
       dispatch(call_categories(response.data));
     };
     getCategories();
@@ -50,7 +49,7 @@ function Categories() {
   };
 
   return (
-    categories && (
+    categories.length && (
       <div className="row">
         <div className="col-2">
           <SideBar />
@@ -91,91 +90,94 @@ function Categories() {
               </div>
             );
           })}
-          <form
-            action=""
-            onSubmit={(event) => handleSubmit(event)}
-            className="container"
-          >
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Name</label>
-              <input
-                type="text"
-                className={`form-control`}
-                name="name"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Title</label>
-              <input
-                type="text"
-                className={`form-control`}
-                name="title"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Subtitle</label>
-              <input
-                type="text"
-                className={`form-control`}
-                name="subtitle"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Tip</label>
-              <input type="text" className={`form-control`} name="tip" />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Incentive</label>
-              <input
-                type="text"
-                className={`form-control`}
-                name="incentive"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Description</label>
-              <textarea
-                type="text"
-                className={`form-control`}
-                name="description"
-                required
-              ></textarea>
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Image 1</label>
-              <input
-                type="file"
-                className={`form-control`}
-                name="image1"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Image 2</label>
-              <input
-                type="file"
-                className={`form-control`}
-                name="image2"
-                required
-              />
-            </div>
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Image 3</label>
-              <input
-                type="file"
-                className={`form-control`}
-                name="image3"
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-success mt-1">
-              Create
-            </button>
-          </form>
+          <h5 className="m-2">New category</h5>
+          <div className="d-flex justify-content-center">
+            <form
+              action=""
+              onSubmit={(event) => handleSubmit(event)}
+              className="container m-2"
+            >
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Name</label>
+                <input
+                  type="text"
+                  className={`form-control`}
+                  name="name"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Title</label>
+                <input
+                  type="text"
+                  className={`form-control`}
+                  name="title"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Subtitle</label>
+                <input
+                  type="text"
+                  className={`form-control`}
+                  name="subtitle"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Tip</label>
+                <input type="text" className={`form-control`} name="tip" />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Incentive</label>
+                <input
+                  type="text"
+                  className={`form-control`}
+                  name="incentive"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Description</label>
+                <textarea
+                  type="text"
+                  className={`form-control`}
+                  name="description"
+                  required
+                ></textarea>
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Image 1</label>
+                <input
+                  type="file"
+                  className={`form-control`}
+                  name="image1"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Image 2</label>
+                <input
+                  type="file"
+                  className={`form-control`}
+                  name="image2"
+                  required
+                />
+              </div>
+              <div className={`form-group mt-1`}>
+                <label htmlFor="">Image 3</label>
+                <input
+                  type="file"
+                  className={`form-control`}
+                  name="image3"
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-success mt-2">
+                Create
+              </button>
+            </form>
+          </div>
         </div>
         <div
           className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}

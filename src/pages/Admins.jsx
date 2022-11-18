@@ -30,7 +30,7 @@ function Admins() {
   };
 
   return (
-    allAdmins && (
+    allAdmins.length && (
       <div className="row">
         <div className="col-2">
           <SideBar />
