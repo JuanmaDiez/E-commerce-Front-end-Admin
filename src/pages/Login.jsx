@@ -27,7 +27,7 @@ function Login() {
       className={`${styles.logInContainer} d-flex justify-content-center align-items-center`}
     >
       <form
-        onSubmit={handleSubmit}
+        onSubmit={(event) => handleSubmit(event)}
         className={`${styles.logInForm} d-flex flex-column justify-content-between align-items-start p-3`}
       >
         <h4>Log in</h4>

@@ -44,7 +44,7 @@ function Home() {
               <div key={order._id} className="d-flex justify-content-around">
                 <p>{index + 1}</p>
                 <p>
-                  <strong>Buyer:</strong> {order.user.firstname}
+                  <strong>Buyer:</strong> {order.user.firstname}{" "}
                   {order.user.lastname}
                 </p>
                 <p>

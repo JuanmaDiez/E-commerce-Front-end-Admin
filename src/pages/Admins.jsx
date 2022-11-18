@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
 import { call_admins, delete_admin } from "../redux/allAdminsSlice";
 import styles from "../modules/Admin.module.css";
+import { empty_orders } from "../redux/ordersSlice";
 
 function Admins() {
   const allAdmins = useSelector((state) => state.allAdmin);
