@@ -15,8 +15,7 @@ function Categories() {
   const dispatch = useDispatch();
   const [display, setDisplay] = useState("d-none");
   const [blur, setBlur] = useState("null");
-  const [name, setName] = useState("");
-  const [id, setId] = useState("");
+  const [category, setCategory] = useState(null);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -40,10 +39,12 @@ function Categories() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const formData = new FormData(event.target);
     const response = await axios({
       url: `${process.env.REACT_APP_API_URL}/categories`,
       method: "POST",
-      data: { name },
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
     });
     dispatch(add_category(response.data));
   };
@@ -75,7 +76,7 @@ function Categories() {
                     onClick={() => {
                       setBlur("blur(8px)");
                       setDisplay("d-flex");
-                      setId(category._id);
+                      setCategory(category);
                     }}
                   >
                     Edit
@@ -90,22 +91,88 @@ function Categories() {
               </div>
             );
           })}
-          <form action="" onSubmit={handleSubmit}>
-            <div className="form-group mt-2">
-              <label htmlFor="">
-                <strong>New category</strong>
-              </label>
+          <form
+            action=""
+            onSubmit={(event) => handleSubmit(event)}
+            className="container"
+          >
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Name</label>
               <input
                 type="text"
-                className={`form-control mt-2 ${styles.createInput}`}
+                className={`form-control`}
                 name="name"
-                value={name}
-                onChange={(event) => {
-                  setName(event.target.value);
-                }}
+                required
               />
             </div>
-            <button type="submit" className={`btn btn-primary mt-2`}>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Title</label>
+              <input
+                type="text"
+                className={`form-control`}
+                name="title"
+                required
+              />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Subtitle</label>
+              <input
+                type="text"
+                className={`form-control`}
+                name="subtitle"
+                required
+              />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Tip</label>
+              <input type="text" className={`form-control`} name="tip" />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Incentive</label>
+              <input
+                type="text"
+                className={`form-control`}
+                name="incentive"
+                required
+              />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Description</label>
+              <textarea
+                type="text"
+                className={`form-control`}
+                name="description"
+                required
+              ></textarea>
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Image 1</label>
+              <input
+                type="file"
+                className={`form-control`}
+                name="image1"
+                required
+              />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Image 2</label>
+              <input
+                type="file"
+                className={`form-control`}
+                name="image2"
+                required
+              />
+            </div>
+            <div className={`form-group mt-1`}>
+              <label htmlFor="">Image 3</label>
+              <input
+                type="file"
+                className={`form-control`}
+                name="image3"
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-success mt-1">
               Create
             </button>
           </form>
@@ -117,7 +184,7 @@ function Categories() {
             display={display}
             setDisplay={setDisplay}
             setBlur={setBlur}
-            id={id}
+            category={category}
           />
         </div>
       </div>

@@ -20,7 +20,6 @@ function EditProduct() {
       });
       setProduct(response.data);
       setFeatured(response.data.featuredProduct);
-      setCategory(response.data.category);
     };
     const getCategories = async () => {
       const response = await axios({

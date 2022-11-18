@@ -42,7 +42,7 @@ function Home() {
           {orders.map((order, index) => {
             return (
               <div key={order._id} className="d-flex justify-content-around">
-                <p>{index}</p>
+                <p>{index + 1}</p>
                 <p>
                   <strong>Buyer:</strong> {order.user.firstname}
                   {order.user.lastname}
