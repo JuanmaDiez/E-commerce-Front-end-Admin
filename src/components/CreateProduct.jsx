@@ -4,22 +4,9 @@ import { useDispatch } from "react-redux";
 import styles from "../modules/CreateProduct.module.css";
 import { add_product } from "../redux/productsSlice";
 
-function CreateProduct({ display, setDisplay, setBlur }) {
+function CreateProduct({ display, setDisplay, setBlur, categories }) {
   const dispatch = useDispatch();
   const [featured, setFeatured] = useState(false);
-  const [categories, setCategories] = useState(null);
- 
-
-  useEffect(() => {
-    const getCategories = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/categories`,
-        method: "GET",
-      });
-      setCategories(response.data);
-    };
-    getCategories();
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

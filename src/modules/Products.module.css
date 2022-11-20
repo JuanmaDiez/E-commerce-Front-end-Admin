@@ -1,9 +1,10 @@
 .productRow {
   border-bottom: solid 1px black;
 }
-.editButton {
-  margin-right: 5px;
-}
 .modalContainer {
   position: absolute;
+}
+.paperBasket {
+  background-color: white;
+  border: none;
 }

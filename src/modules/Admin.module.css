@@ -1,3 +1,7 @@
 .userRow {
   border-bottom: solid 1px black;
 }
+.paperBasket {
+  height: 32px;
+  width: auto;
+}
