@@ -72,7 +72,7 @@ function Register() {
             Register
           </button>
           <p className="mt-2">
-            Already registered?
+            Already registered?{" "}
             <Link to="/login" className={styles.registerLink}>
               Log in here
             </Link>

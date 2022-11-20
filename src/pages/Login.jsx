@@ -11,15 +11,18 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const response = await axios({
-      url: `${process.env.REACT_APP_API_URL}/admins/login`,
-      method: "POST",
-      data: { email, password },
-    });
-    dispatch(login(response.data));
-    navigate("/");
+    const getToken = async () => {
+      const response = await axios({
+        url: `${process.env.REACT_APP_API_URL}/admins/login`,
+        method: "POST",
+        data: { email, password },
+      });
+      dispatch(login(response.data));
+      navigate("/");
+    };
+    getToken();
   };
 
   return (
@@ -56,7 +59,7 @@ function Login() {
             Log In
           </button>
           <p className="mt-2">
-            Don't have an account?
+            Don't have an account?{" "}
             <Link to="/register" className={styles.loginLink}>
               Register here
             </Link>
