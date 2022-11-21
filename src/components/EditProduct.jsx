@@ -1,7 +1,16 @@
 import axios from "axios";
 import styles from "../modules/EditProduct.module.css";
 
-function EditProduct({ display, setDisplay, setBlur, product, categories, featured, setFeatured }) {
+function EditProduct({
+  display,
+  setDisplay,
+  setBlur,
+  product,
+  categories,
+  featured,
+  setFeatured,
+}) {
+  const admin = useSelector((state) => state.admin);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -12,7 +21,10 @@ function EditProduct({ display, setDisplay, setBlur, product, categories, featur
       url: `${process.env.REACT_APP_API_URL}/products/${product._id}`,
       method: "PATCH",
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${admin.token}`,
+      },
     });
   };
 

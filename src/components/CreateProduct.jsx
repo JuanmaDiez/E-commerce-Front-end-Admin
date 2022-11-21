@@ -5,6 +5,7 @@ import styles from "../modules/CreateProduct.module.css";
 import { add_product } from "../redux/productsSlice";
 
 function CreateProduct({ display, setDisplay, setBlur, categories }) {
+  const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const [featured, setFeatured] = useState(false);
 
@@ -17,7 +18,10 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
       url: `${process.env.REACT_APP_API_URL}/products`,
       method: "POST",
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${admin.token}`,
+      },
     });
     dispatch(add_product(response.data));
   };

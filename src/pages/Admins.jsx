@@ -7,6 +7,7 @@ import styles from "../modules/Admin.module.css";
 import paperBasket from "../image/paperBasket.png";
 
 function Admins() {
+  const admin = useSelector((state) => state.admin);
   const allAdmins = useSelector((state) => state.allAdmin);
   const dispatch = useDispatch();
 
@@ -15,6 +16,7 @@ function Admins() {
       const response = await axios({
         url: `${process.env.REACT_APP_API_URL}/admins`,
         method: "GET",
+        headers: `Bearer ${admin.token}`,
       });
 
       dispatch(call_admins(response.data));
@@ -27,6 +29,7 @@ function Admins() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
       method: "DELETE",
+      headers: `Bearer ${admin.token}`,
     });
   };
 

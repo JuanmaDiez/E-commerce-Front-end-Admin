@@ -1,10 +1,12 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { add_category } from "../redux/categorySlice";
 import styles from "../modules/CreateCategory.module.css";
 
 function CreateCategory({ display, setDisplay, setBlur }) {
+  const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -14,7 +16,10 @@ function CreateCategory({ display, setDisplay, setBlur }) {
       url: `${process.env.REACT_APP_API_URL}/categories`,
       method: "POST",
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${admin.token}`,
+      },
     });
     dispatch(add_category(response.data));
   };

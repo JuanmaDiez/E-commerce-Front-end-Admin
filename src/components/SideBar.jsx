@@ -25,7 +25,10 @@ function SideBar() {
     <div
       className={`d-flex flex-column justify-content-around ${styles.sideBar}`}
     >
-      <h3 className={styles.title}>Menu</h3>
+      <div>
+        <h3 className={`${styles.title} mb-1`}>Menu</h3>
+        <small className={styles.title}>Welcome, {admin.name}</small>
+      </div>
       <div className="d-flex flex-column">
         <Link to="/" className={styles.sidebarLink}>
           Home

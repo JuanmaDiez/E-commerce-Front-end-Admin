@@ -5,6 +5,7 @@ import styles from "../modules/EditCategory.module.css";
 import { edit_category } from "../redux/categorySlice";
 
 function EditCategory({ display, setDisplay, setBlur, category }) {
+  const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
@@ -17,7 +18,10 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
       url: `${process.env.REACT_APP_API_URL}/categories/${category._id}`,
       method: "PATCH",
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${admin.token}`,
+      },
     });
   };
 

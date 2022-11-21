@@ -13,6 +13,7 @@ import newProduct from "../image/new.png";
 function Products() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
+  const admin = useSelector((state) => state.admin);
   const [categories, setCategories] = useState(null);
   const [product, setProduct] = useState(null);
   const [featured, setFeatured] = useState(null);
@@ -44,6 +45,7 @@ function Products() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/products/${id}`,
       method: "DELETE",
+      headers: `Bearer ${admin.token}`,
     });
   };
 

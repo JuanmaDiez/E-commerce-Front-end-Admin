@@ -7,6 +7,7 @@ import { call_orders, edit_order } from "../redux/ordersSlice";
 
 function Home() {
   const orders = useSelector((state) => state.order);
+  const admin = useSelector((state) => state.admin);
   const [state, setState] = useState("Paid");
   const dispatch = useDispatch();
 
@@ -15,6 +16,7 @@ function Home() {
       const response = await axios({
         url: `${process.env.REACT_APP_API_URL}/orders`,
         method: "GET",
+        headers: `Bearer ${admin.token}`,
       });
       dispatch(call_orders(response.data));
     };
@@ -27,6 +29,7 @@ function Home() {
       url: `${process.env.REACT_APP_API_URL}/orders/${id}`,
       method: "PATCH",
       data: { state },
+      headers: `Bearer ${admin.token}`
     });
   };
 

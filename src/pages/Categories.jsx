@@ -13,6 +13,7 @@ import newCategory from "../image/new.png";
 function Categories() {
   const categories = useSelector((state) => state.category);
   const dispatch = useDispatch();
+  const admin = useSelector((state) => state.admin)
   const [displayEdit, setDisplayEdit] = useState("d-none");
   const [blur, setBlur] = useState("null");
   const [displayCreate, setDisplayCreate] = useState("d-none");
@@ -34,6 +35,7 @@ function Categories() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/categories/${id}`,
       method: "DELETE",
+      headers: `Bearer ${admin.token}`,
     });
   };
 
