@@ -34,23 +34,38 @@ function Login() {
         className={`${styles.logInForm} d-flex flex-column justify-content-between align-items-start p-3`}
       >
         <h4>Log in</h4>
-        <div className="form-group">
-          <label htmlFor="">Email</label>
-          <input
-            type="email"
-            onChange={(event) => setEmail(event.target.value)}
-            className={`${styles.logInInput} form-control`}
-            name="email"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="">Password</label>
-          <input
-            type="password"
-            onChange={(event) => setPassword(event.target.value)}
-            className={`${styles.logInInput} form-control`}
-            name="password"
-          />
+        <div className="d-flex">
+          <div>
+            <div className="form-group">
+              <label htmlFor="">Email</label>
+              <input
+                type="email"
+                onChange={(event) => setEmail(event.target.value)}
+                className={`${styles.logInInput} form-control`}
+                name="email"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="">Password</label>
+              <input
+                type="password"
+                onChange={(event) => setPassword(event.target.value)}
+                className={`${styles.logInInput} form-control`}
+                name="password"
+              />
+            </div>
+          </div>
+          <div className="ps-5">
+            <small>
+              If you want to log in as an Admin, use the following credentials:
+            </small>
+            <div>
+              <small>Email: admin@gmail.com</small>
+            </div>
+            <div>
+              <small>Password: 123456</small>
+            </div>
+          </div>
         </div>
         <div
           className={`d-flex justify-content-between ${styles.formParagraph} mt-2`}

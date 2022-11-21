@@ -18,7 +18,7 @@ function SideBar() {
     dispatch(empty_orders());
     dispatch(empty_categories());
     dispatch(logout());
-    navigate("/");
+    navigate("/login");
   };
 
   return (
