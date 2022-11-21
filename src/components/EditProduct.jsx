@@ -1,5 +1,6 @@
 import axios from "axios";
 import styles from "../modules/EditProduct.module.css";
+import { useSelector } from "react-redux";
 
 function EditProduct({
   display,

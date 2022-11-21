@@ -16,7 +16,7 @@ function Home() {
       const response = await axios({
         url: `${process.env.REACT_APP_API_URL}/orders`,
         method: "GET",
-        headers: `Bearer ${admin.token}`,
+        headers: { Authorization: `Bearer ${admin.token}` },
       });
       dispatch(call_orders(response.data));
     };
@@ -29,7 +29,7 @@ function Home() {
       url: `${process.env.REACT_APP_API_URL}/orders/${id}`,
       method: "PATCH",
       data: { state },
-      headers: `Bearer ${admin.token}`
+      headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
 

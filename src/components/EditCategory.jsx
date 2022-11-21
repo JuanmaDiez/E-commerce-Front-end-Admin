@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../modules/EditCategory.module.css";
 import { edit_category } from "../redux/categorySlice";
 

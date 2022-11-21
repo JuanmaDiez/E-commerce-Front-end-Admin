@@ -45,7 +45,7 @@ function Products() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/products/${id}`,
       method: "DELETE",
-      headers: `Bearer ${admin.token}`,
+      headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
 

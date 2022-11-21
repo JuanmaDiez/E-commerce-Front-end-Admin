@@ -16,7 +16,7 @@ function Admins() {
       const response = await axios({
         url: `${process.env.REACT_APP_API_URL}/admins`,
         method: "GET",
-        headers: `Bearer ${admin.token}`,
+        headers: { Authorization: `Bearer ${admin.token}` },
       });
 
       dispatch(call_admins(response.data));
@@ -29,7 +29,7 @@ function Admins() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
       method: "DELETE",
-      headers: `Bearer ${admin.token}`,
+      headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
 
