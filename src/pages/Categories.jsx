@@ -9,11 +9,13 @@ import editTools from "../image/editTools.png";
 import paperBasket from "../image/paperBasket.png";
 import CreateCategory from "../components/CreateCategory";
 import newCategory from "../image/new.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Categories() {
   const categories = useSelector((state) => state.category);
   const dispatch = useDispatch();
-  const admin = useSelector((state) => state.admin)
+  const admin = useSelector((state) => state.admin);
   const [displayEdit, setDisplayEdit] = useState("d-none");
   const [blur, setBlur] = useState("null");
   const [displayCreate, setDisplayCreate] = useState("d-none");
@@ -32,6 +34,7 @@ function Categories() {
 
   const handleClick = async (id) => {
     dispatch(delete_category(id));
+    toast.error("Category deleted");
     await axios({
       url: `${process.env.REACT_APP_API_URL}/categories/${id}`,
       method: "DELETE",
@@ -42,6 +45,18 @@ function Categories() {
   return (
     categories.length && (
       <div className="row">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="col-2">
           <SideBar />
         </div>
@@ -112,6 +127,7 @@ function Categories() {
             setDisplay={setDisplayEdit}
             setBlur={setBlur}
             category={category}
+            setCategory={setCategory}
           />
           <CreateCategory
             display={displayCreate}

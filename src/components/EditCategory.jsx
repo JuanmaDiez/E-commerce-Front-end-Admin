@@ -1,19 +1,39 @@
 import axios from "axios";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import styles from "../modules/EditCategory.module.css";
 import { edit_category } from "../redux/categorySlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function EditCategory({ display, setDisplay, setBlur, category }) {
+function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
   const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
+  const [name, setName] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [tip, setTip] = useState(null);
+  const [subtitle, setSubtitle] = useState(null);
+  const [incentive, setIncentive] = useState(null);
+  const [description, setDescription] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     setBlur("blur(0px)");
     setDisplay("d-none");
-    dispatch(edit_category({ id: category._id, ...event.target }));
+    dispatch(
+      edit_category({
+        id: category._id,
+        name: name || category.name,
+        title: title || category.title,
+        subtitle: subtitle || category.subtitle,
+        tip: tip || category.tip,
+        incentive: incentive || category.incentive,
+        description: description || category.description,
+      })
+    );
+    toast.warning("Category edited");
+    setCategory(null);
     await axios({
       url: `${process.env.REACT_APP_API_URL}/categories/${category._id}`,
       method: "PATCH",
@@ -34,6 +54,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
             onClick={() => {
               setBlur("blur(0px)");
               setDisplay("d-none");
+              setCategory(null);
             }}
           >
             <strong>X</strong>
@@ -51,6 +72,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
                 className={`form-control`}
                 name="name"
                 defaultValue={category.name}
+                onChange={(event) => setName(event.target.value)}
               />
             </div>
             <div className={`form-group mt-1 ${styles.inputTitle}`}>
@@ -60,6 +82,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
                 className={`form-control`}
                 name="title"
                 defaultValue={category.title}
+                onChange={(event) => setTitle(event.target.value)}
               />
             </div>
           </div>
@@ -71,6 +94,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
                 className={`form-control`}
                 name="tip"
                 defaultValue={category.tip}
+                onChange={(event) => setTip(event.target.value)}
               />
             </div>
             <div className={`form-group mt-1 ${styles.inputSubtitle}`}>
@@ -80,6 +104,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
                 className={`form-control`}
                 name="subtitle"
                 defaultValue={category.subtitle}
+                onChange={(event) => setSubtitle(event.target.value)}
               />
             </div>
           </div>
@@ -90,6 +115,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
               className={`form-control`}
               name="incentive"
               defaultValue={category.incentive}
+              onChange={(event) => setIncentive(event.target.value)}
             />
           </div>
           <div className={`form-group mt-1`}>
@@ -99,6 +125,7 @@ function EditCategory({ display, setDisplay, setBlur, category }) {
               className={`form-control`}
               name="description"
               defaultValue={category.description}
+              onChange={(event) => setDescription(event.target.value)}
             ></textarea>
           </div>
           <div className={`form-group mt-1`}>

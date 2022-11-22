@@ -16,7 +16,7 @@ const categorySlice = createSlice({
       return state.map((category) => {
         return category._id !== action.payload.id
           ? category
-          : { ...category, name: action.payload.name };
+          : { ...category, ...action.payload };
       });
     },
 

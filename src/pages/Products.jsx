@@ -9,6 +9,8 @@ import styles from "../modules/Products.module.css";
 import paperBasket from "../image/paperBasket.png";
 import editTools from "../image/editTools.png";
 import newProduct from "../image/new.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Products() {
   const dispatch = useDispatch();
@@ -42,6 +44,7 @@ function Products() {
 
   const handleClick = async (id) => {
     dispatch(delete_product(id));
+    toast.error("Product deleted");
     await axios({
       url: `${process.env.REACT_APP_API_URL}/products/${id}`,
       method: "DELETE",
@@ -53,6 +56,18 @@ function Products() {
     products.length &&
     categories && (
       <div className={`row ${styles.sidebarContainer}`}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="col-2">
           <SideBar />
         </div>
@@ -136,6 +151,7 @@ function Products() {
             product={product}
             featured={featured}
             setFeatured={setFeatured}
+            setProduct={setProduct}
           />
         </div>
       </div>

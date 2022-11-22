@@ -13,7 +13,7 @@ const orderSlice = createSlice({
           ? order
           : {
               ...order,
-              state: action.payload.state,
+              state: order.state + 1,
             };
       });
     },

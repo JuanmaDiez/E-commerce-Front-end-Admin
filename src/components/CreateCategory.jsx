@@ -2,6 +2,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { add_category } from "../redux/categorySlice";
 import styles from "../modules/CreateCategory.module.css";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateCategory({ display, setDisplay, setBlur }) {
   const admin = useSelector((state) => state.admin);
@@ -12,6 +14,7 @@ function CreateCategory({ display, setDisplay, setBlur }) {
     const formData = new FormData(event.target);
     setDisplay("d-none");
     setBlur("blur(0px)");
+    toast.success("Category created!")
     const response = await axios({
       url: `${process.env.REACT_APP_API_URL}/categories`,
       method: "POST",

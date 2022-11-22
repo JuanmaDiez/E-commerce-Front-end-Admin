@@ -5,6 +5,8 @@ import SideBar from "../components/SideBar";
 import { call_admins, delete_admin } from "../redux/allAdminsSlice";
 import styles from "../modules/Admin.module.css";
 import paperBasket from "../image/paperBasket.png";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Admins() {
   const admin = useSelector((state) => state.admin);
@@ -26,6 +28,7 @@ function Admins() {
 
   const handleClick = async (id) => {
     dispatch(delete_admin(id));
+    toast.error("Admin deleted")
     await axios({
       url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
       method: "DELETE",
@@ -40,6 +43,18 @@ function Admins() {
           <SideBar />
         </div>
         <div className="col-10">
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
           <h5 className="m-3">Administrators list</h5>
           <div className="row mt-2">
             <div className="col-1"></div>

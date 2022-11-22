@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector} from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../modules/CreateProduct.module.css";
 import { add_product } from "../redux/productsSlice";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateProduct({ display, setDisplay, setBlur, categories }) {
   const admin = useSelector((state) => state.admin);
@@ -24,6 +26,7 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
       },
     });
     dispatch(add_product(response.data));
+    toast.success("Product created!");
   };
 
   return (

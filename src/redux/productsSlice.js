@@ -15,12 +15,24 @@ const productSlice = createSlice({
         return product._id !== action.payload;
       });
     },
+    edit_product(state, action) {
+      return state.map((product) => {
+        return product._id !== action.payload.id
+          ? product
+          : { ...product, ...action.payload };
+      });
+    },
     empty_products(state, action) {
       return {};
     },
   },
 });
 
-export const { call_products, add_product, delete_product, empty_products } =
-  productSlice.actions;
+export const {
+  call_products,
+  add_product,
+  edit_product,
+  delete_product,
+  empty_products,
+} = productSlice.actions;
 export default productSlice.reducer;

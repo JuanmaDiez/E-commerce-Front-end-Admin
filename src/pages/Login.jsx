@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../redux/adminSlice";
 import styles from "../modules/Login.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -14,13 +16,17 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const getToken = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/admins/login`,
-        method: "POST",
-        data: { email, password },
-      });
-      dispatch(login(response.data));
-      navigate("/");
+      try {
+        const response = await axios({
+          url: `${process.env.REACT_APP_API_URL}/admins/login`,
+          method: "POST",
+          data: { email, password },
+        });
+        dispatch(login(response.data));
+        navigate("/");
+      } catch (error) {
+        toast.error("Incorrect email or password");
+      }
     };
     getToken();
   };
@@ -29,6 +35,18 @@ function Login() {
     <div
       className={`${styles.logInContainer} d-flex justify-content-center align-items-center`}
     >
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <form
         onSubmit={(event) => handleSubmit(event)}
         className={`${styles.logInForm} d-flex flex-column justify-content-between align-items-start p-3`}

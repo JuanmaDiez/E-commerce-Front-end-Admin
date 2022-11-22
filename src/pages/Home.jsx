@@ -1,14 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
 import styles from "../modules/Home.module.css";
 import { call_orders, edit_order } from "../redux/ordersSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
 
 function Home() {
   const orders = useSelector((state) => state.order);
   const admin = useSelector((state) => state.admin);
-  const [state, setState] = useState("Paid");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,11 +26,11 @@ function Home() {
   }, []);
 
   const handleClick = async (id) => {
-    dispatch(edit_order({ state, id }));
+    dispatch(edit_order({ id }));
+    toast.success("Succesfully changed state!");
     await axios({
       url: `${process.env.REACT_APP_API_URL}/orders/${id}`,
       method: "PATCH",
-      data: { state },
       headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
@@ -36,6 +38,18 @@ function Home() {
   return (
     orders.length && (
       <div className="row">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <div className="col-2 p-0">
           <SideBar />
         </div>
@@ -64,42 +78,41 @@ function Home() {
                   {order.user.firstname} {order.user.lastname}
                 </p>
                 <p className="col-3">${order.price.toFixed(2)}</p>
-                <p className="col-3">{order.createdAt}</p>
-                {order.state === "Not paid" ? (
+                <p className="col-3">
+                  {format(new Date(order.createdAt), "yyyy-MM-dd")}
+                </p>
+                {order.state === 1 ? (
                   <p
                     className="col-2 btn btn-warning"
                     onClick={() => {
-                      setState("Paid");
                       handleClick(order._id);
                     }}
                   >
                     Pending
                   </p>
                 ) : null}
-                {order.state === "Paid" ? (
+                {order.state === 2 ? (
                   <p
                     className="col-2 btn btn-primary"
                     onClick={() => {
-                      setState("Sent");
                       handleClick(order._id);
                     }}
                   >
-                    {order.state}
+                    Paid
                   </p>
                 ) : null}
-                {order.state === "Sent" ? (
+                {order.state === 3 ? (
                   <p
-                    className="col-2 btn btn-info"
+                    className="col-2 btn btn-success"
                     onClick={() => {
-                      setState("Delivered");
                       handleClick(order._id);
                     }}
                   >
-                    {order.state}
+                    Sent
                   </p>
                 ) : null}
-                {order.state === "Delivered" ? (
-                  <p className="col-2 btn btn-success">{order.state}</p>
+                {order.state === 4 ? (
+                  <p className="col-2 btn btn-dark">Delivered</p>
                 ) : null}
               </div>
             );
