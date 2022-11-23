@@ -98,12 +98,22 @@ function EditProduct({
               return (
                 <div key={category._id}>
                   <label htmlFor="">{category.name}</label>
-                  <input
-                    type="radio"
-                    className="ms-2"
-                    value={category._id}
-                    name="category"
-                  />
+                  {category._id === product.category ? (
+                    <input
+                      type="radio"
+                      className="ms-2"
+                      value={category._id}
+                      name="category"
+                      defaultChecked
+                    />
+                  ) : (
+                    <input
+                      type="radio"
+                      className="ms-2"
+                      value={category._id}
+                      name="category"
+                    />
+                  )}
                 </div>
               );
             })}
