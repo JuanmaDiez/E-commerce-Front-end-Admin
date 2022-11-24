@@ -34,9 +34,6 @@ function Home() {
       headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
-  console.log("orders:", orders);
-  console.log(orders[0].user);
-  console.log(orders[0].user.firstname);
   return (
     orders.length && (
       <div className="row">
