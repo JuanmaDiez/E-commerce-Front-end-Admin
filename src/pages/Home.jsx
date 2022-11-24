@@ -34,7 +34,9 @@ function Home() {
       headers: { Authorization: `Bearer ${admin.token}` },
     });
   };
-
+  console.log("orders:", orders);
+  console.log(orders[0].user);
+  console.log(orders[0].user.firstname);
   return (
     orders.length && (
       <div className="row">
@@ -75,7 +77,9 @@ function Home() {
               <div key={order._id} className={`row ${styles.orderRow}`}>
                 <p className="col-1">{index + 1}</p>
                 <p className="col-3">
-                  {order.user.firstname} {order.user.lastname}
+                  {order.user
+                    ? `${order.user.firstname} ${order.user.lastname}`
+                    : "Anonymous"}
                 </p>
                 <p className="col-3">${order.price.toFixed(2)}</p>
                 <p className="col-3">
