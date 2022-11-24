@@ -77,7 +77,6 @@ function Home() {
                   {order.user
                     ? `${order.user.firstname} ${order.user.lastname}`
                     : "Anonymous"}
-                    Something failed
                 </p>
                 <p className="col-3">${order.price.toFixed(2)}</p>
                 <p className="col-3">
