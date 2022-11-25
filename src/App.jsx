@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Categories from "./pages/Categories";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import PublicRoute from "./protectedRoutes/PublicRoute";
+import Testing from "./pages/Testing";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/testing" element={<Testing />} />
       </Routes>
     </div>
   );
