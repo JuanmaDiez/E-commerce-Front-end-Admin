@@ -8,6 +8,7 @@ import Categories from "./pages/Categories";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import PublicRoute from "./protectedRoutes/PublicRoute";
 import Testing from "./pages/Testing";
+import Testing2 from "./pages/Testing2";
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
           }
         />
         <Route path="/testing" element={<Testing />} />
+        <Route path="/testing2" element={<Testing2 />} />
       </Routes>
     </div>
   );

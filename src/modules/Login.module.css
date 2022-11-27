@@ -1,31 +1,36 @@
-*{
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
+.logInForm {
+  max-width: 400px;
+  border: none;
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-top: 50px;
+  background-color: white;
+  border: none;
+  box-shadow: -49px 0px 48px 33px rgba(0, 0, 0, 0.1);
 }
-
-.logInContainer {
+.logIn {
   height: 100vh;
   background-image: url("../image/2858013.webp");
   background-size: cover;
   background-repeat: no-repeat;
+  background-size: cover;
+  /* position: static; */
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }
 
-.logInForm {
-  width: 40%;
-  height: 40%;
-  background-color: white;
-  border: solid 1px #eaeaea;
-  border-radius: 3px;
+.inputLogin {
+  background-color: rgb(211, 211, 211);
 }
 
-.logInInput {
-  background-color: #eaeaea;
-  margin-top: 5px;
+.credentials {
+  font-weight: 800;
+  margin-bottom: 50px;
+  font-family: "Inter", sans-serif;
 }
-.formParagraph {
-  height: 20%;
-  width: 95%;
-}
-.loginLink {
+.adminLink {
+  font-family: "Inter", sans-serif;
   color: black;
+  margin-left: 4px;
 }
+

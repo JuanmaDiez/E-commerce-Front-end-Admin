@@ -32,9 +32,7 @@ function Login() {
   };
 
   return (
-    <div
-      className={`${styles.logInContainer} d-flex justify-content-center align-items-center`}
-    >
+    <div className={styles.logIn}>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -47,58 +45,68 @@ function Login() {
         pauseOnHover
         theme="light"
       />
-      <form
-        onSubmit={(event) => handleSubmit(event)}
-        className={`${styles.logInForm} d-flex flex-column justify-content-between align-items-start p-3`}
-      >
-        <h4>Log in</h4>
-        <div className="d-flex">
-          <div>
-            <div className="form-group">
-              <label htmlFor="">Email</label>
+      <div className="container">
+        <div className="d-flex justify-content-center">
+          <form
+            className={`${styles.logInForm}`}
+            onSubmit={(event) => handleSubmit(event)}
+          >
+            <h5>Log in</h5>
+            <div className="form-group mb-2">
+              <label for="exampleFormControlInput1">Email address</label>
               <input
-                type="email"
-                onChange={(event) => setEmail(event.target.value)}
-                className={`${styles.logInInput} form-control`}
+                type="text"
+                className={styles.inputLogin + " form-control"}
+                id="exampleFormControlInput1"
                 name="email"
+                placeholder="Email..."
+                onChange={(event) => setEmail(event.target.value)}
               />
             </div>
-            <div className="form-group">
-              <label htmlFor="">Password</label>
+            <div className="form-group mb-2">
+              <label for="exampleFormControlInput2">Password</label>
               <input
                 type="password"
-                onChange={(event) => setPassword(event.target.value)}
-                className={`${styles.logInInput} form-control`}
+                className={styles.inputLogin + " form-control"}
+                id="exampleFormControlInput2"
                 name="password"
+                placeholder="Password..."
+                onChange={(event) => setPassword(event.target.value)}
               />
             </div>
-          </div>
-          <div className="ps-5">
+            <div className="d-flex justify-content-between">
+              <div>
+                <button type="submit" className="btn btn-dark mt-2">
+                  Sign in
+                </button>
+              </div>
+            </div>
+            <hr />
+            <div>
+              <small className={styles.credentials}>
+                If you want to log in as an Admin, use the following
+                credentials:
+              </small>
+              <div>
+                <small>Email: admin@gmail.com</small>
+              </div>
+              <div>
+                <small>Password: 123456</small>
+              </div>
+            </div>
+            <hr />
             <small>
-              If you want to log in as an Admin, use the following credentials:
+              If you want to go back to the main project,
+              <a
+                href={process.env.REACT_APP_MAIN_URL}
+                className={styles.adminLink}
+              >
+                click here!
+              </a>
             </small>
-            <div>
-              <small>Email: admin@gmail.com</small>
-            </div>
-            <div>
-              <small>Password: 123456</small>
-            </div>
-          </div>
+          </form>
         </div>
-        <div
-          className={`d-flex justify-content-between ${styles.formParagraph} mt-2`}
-        >
-          <button type="submit" className="btn btn-dark pt-0 pb-0">
-            Log In
-          </button>
-          <p className="mt-2">
-            Don't have an account?{" "}
-            <Link to="/register" className={styles.loginLink}>
-              Register here
-            </Link>
-          </p>
-        </div>
-      </form>
+      </div>
     </div>
   );
 }
