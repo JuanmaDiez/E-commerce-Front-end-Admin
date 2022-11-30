@@ -11,6 +11,7 @@ import CreateCategory from "../components/CreateCategory";
 import newCategory from "../image/new.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Table } from "react-bootstrap";
 
 function Categories() {
   const categories = useSelector((state) => state.category);
@@ -44,96 +45,98 @@ function Categories() {
 
   return (
     categories.length && (
-      <div className="row">
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={true}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-        <div className="col-2">
-          <SideBar />
-        </div>
-        <div className="col-10" style={{ filter: `${blur}` }}>
-          <div className="d-flex justify-content-between m-2">
-            <h5 className="m-3">Categories list</h5>
-            <img
-              src={newCategory}
-              alt="newCategory"
-              className={` m-3`}
-              onClick={() => {
-                setDisplayCreate("d-flex");
-                setBlur("blur(8px)");
-              }}
+      <div className="container-fluid">
+        <div className="row">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          <div className="col-2 p-0">
+            <SideBar />
+          </div>
+          <div className="col-10" style={{ filter: `${blur}` }}>
+            <div className="d-flex justify-content-between m-2">
+              <h5 className="m-3">Categories</h5>
+              <img
+                src={newCategory}
+                alt="newCategory"
+                className={` m-3`}
+                onClick={() => {
+                  setDisplayCreate("d-flex");
+                  setBlur("blur(8px)");
+                }}
+              />
+            </div>
+            <div className="row justify-content-center">
+              <div className="col-10">
+                <Table striped bordered hover>
+                  <thead className="thead-light">
+                    <th scope="row" className="col-1">#</th>
+                    <th className="col-2">Name</th>
+                    <th className="col-2">Stock</th>
+                    <th className="col-3">Title</th>
+                    <th className="col-1">Actions</th>
+                  </thead>
+                  <tbody>
+                    {categories.map((category, index) => {
+                      return (
+                        <tr
+                          key={category._id}
+                          className={`${styles.categoryRow}`}
+                        >
+                          <th>{index + 1}</th>
+                          <td>{category.name}</td>
+                          <td>{category.products.length}</td>
+                          <td>{category.title}</td>
+                          <td>
+                            <img
+                              src={editTools}
+                              alt="edit"
+                              onClick={() => {
+                                setBlur("blur(8px)");
+                                setDisplayEdit("d-flex");
+                                setCategory(category);
+                              }}
+                            />
+                            <img
+                              className="ms-3"
+                              src={paperBasket}
+                              alt="delete"
+                              onClick={() => handleClick(category._id)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
+          >
+            <EditCategory
+              display={displayEdit}
+              setDisplay={setDisplayEdit}
+              setBlur={setBlur}
+              category={category}
+              setCategory={setCategory}
+            />
+            <CreateCategory
+              display={displayCreate}
+              setDisplay={setDisplayCreate}
+              setBlur={setBlur}
             />
           </div>
-          <div className="row mt-4">
-            <div className="col-1"></div>
-            <h5 className="col-3">
-              <strong>Name</strong>
-            </h5>
-            <h5 className="col-3">
-              <strong>Stock</strong>
-            </h5>
-            <h5 className="col-3">
-              <strong>Title</strong>
-            </h5>
-            <h5 className="col-2">
-              <strong>Actions</strong>
-            </h5>
-          </div>
-          {categories.map((category, index) => {
-            return (
-              <div
-                key={category._id}
-                className={`row ${styles.categoryRow} mt-3`}
-              >
-                <small className="col-1">{index + 1}</small>
-                <p className="col-3">{category.name}</p>
-                <p className="col-3">{category.products.length}</p>
-                <p className="col-3">{category.title}</p>
-                <div className="col-2">
-                  <img
-                    src={editTools}
-                    alt="edit"
-                    onClick={() => {
-                      setBlur("blur(8px)");
-                      setDisplayEdit("d-flex");
-                      setCategory(category);
-                    }}
-                  />
-                  <img
-                    className="ms-3"
-                    src={paperBasket}
-                    alt="delete"
-                    onClick={() => handleClick(category._id)}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div
-          className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
-        >
-          <EditCategory
-            display={displayEdit}
-            setDisplay={setDisplayEdit}
-            setBlur={setBlur}
-            category={category}
-            setCategory={setCategory}
-          />
-          <CreateCategory
-            display={displayCreate}
-            setDisplay={setDisplayCreate}
-            setBlur={setBlur}
-          />
         </div>
       </div>
     )

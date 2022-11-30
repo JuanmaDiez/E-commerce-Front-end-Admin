@@ -7,6 +7,7 @@ import styles from "../modules/Admin.module.css";
 import paperBasket from "../image/paperBasket.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Table } from "react-bootstrap";
 
 function Admins() {
   const admin = useSelector((state) => state.admin);
@@ -28,7 +29,7 @@ function Admins() {
 
   const handleClick = async (id) => {
     dispatch(delete_admin(id));
-    toast.error("Admin deleted")
+    toast.error("Admin deleted");
     await axios({
       url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
       method: "DELETE",
@@ -38,55 +39,59 @@ function Admins() {
 
   return (
     allAdmins.length && (
-      <div className="row">
-        <div className="col-2">
-          <SideBar />
-        </div>
-        <div className="col-10">
-        <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={true}
-        newestOnTop={true}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-          <h5 className="m-3">Administrators list</h5>
-          <div className="row mt-2">
-            <div className="col-1"></div>
-            <h5 className="col-3">
-              <strong>Firstname</strong>
-            </h5>
-            <h5 className="col-3">
-              <strong>Lastname</strong>
-            </h5>
-            <h5 className="col-3">
-              <strong>Email</strong>
-            </h5>
-            <h5 className="col-2">
-              <strong>Action</strong>
-            </h5>
+      <div className="container-fluid">
+        <div className="row">
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          <div className="col-2 p-0">
+            <SideBar />
           </div>
-          {allAdmins.map((user, index) => {
-            return (
-              <div key={user._id} className={`row ${styles.userRow} mt-2`}>
-                <small className="col-1">{index + 1}</small>
-                <p className="col-3">{user.firstname}</p>
-                <p className="col-3">{user.lastname}</p>
-                <p className="col-3">{user.email}</p>
-                <img
-                  src={paperBasket}
-                  className={`img-fluid col-2 ${styles.paperBasket}`}
-                  alt="delete"
-                  onClick={() => handleClick(user._id)}
-                />
+          <div className="col-10">
+            <h5 className="m-3">Administrators</h5>
+            <div className="row justify-content-center">
+              <div className="col-10">
+                <Table striped bordered hover>
+                  <thead className="thead-light">
+                    <th scope="row" className="col-1">#</th>
+                    <th className="col-2">Firstname</th>
+                    <th className="col-2">Lastname</th>
+                    <th className="col-2">Email</th>
+                    <th className="col-1">Action</th>
+                  </thead>
+                  <tbody>
+                    {allAdmins.map((user, index) => {
+                      return (
+                        <tr key={user._id} className={`${styles.userRow}`}>
+                          <th>{index + 1}</th>
+                          <td>{user.firstname}</td>
+                          <td>{user.lastname}</td>
+                          <td>{user.email}</td>
+                          <td>
+                            <img
+                              src={paperBasket}
+                              className={`img-fluid${styles.paperBasket}`}
+                              alt="delete"
+                              onClick={() => handleClick(user._id)}
+                            />
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
       </div>
     )

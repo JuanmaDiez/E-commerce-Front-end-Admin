@@ -1,10 +1,7 @@
-.productRow {
-  border-bottom: solid 1px black;
-}
 .modalContainer {
   position: absolute;
 }
 .paperBasket {
-  background-color: white;
+  background-color: inherit;
   border: none;
 }

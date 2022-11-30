@@ -1,14 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
 import Admins from "./pages/Admins";
 import Products from "./pages/Products";
 import Register from "./pages/Register";
 import Categories from "./pages/Categories";
 import PrivateRoute from "./protectedRoutes/PrivateRoute";
 import PublicRoute from "./protectedRoutes/PublicRoute";
-import Testing from "./pages/Testing";
-import Testing2 from "./pages/Testing2";
+import Orders from "./pages/Orders";
+import Overview from "./pages/Overview";
 
 function App() {
   return (
@@ -34,7 +33,7 @@ function App() {
           path="/"
           element={
             <PrivateRoute>
-              <Home />
+              <Overview />
             </PrivateRoute>
           }
         />
@@ -62,8 +61,14 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/testing" element={<Testing />} />
-        <Route path="/testing2" element={<Testing2 />} />
+        <Route
+          path="/orders"
+          element={
+            <PrivateRoute>
+              <Orders />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </div>
   );
