@@ -117,7 +117,7 @@ function Overview() {
             <SideBar />
           </div>
           <div className={`col-10 ${styles.overviewBody}`}>
-            <h4 className="m-3">Overview</h4>
+            <h4 className={`m-3 ${styles.title}`}>Overview</h4>
             <div className="row justify-content-center">
               <div className="col-8">
                 <Line

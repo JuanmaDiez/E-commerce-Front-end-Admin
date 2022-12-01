@@ -57,7 +57,7 @@ function Admins() {
             <SideBar />
           </div>
           <div className="col-10">
-            <h5 className="m-3">Administrators</h5>
+            <h4 className={`m-3 ${styles.title}`}>Administrators</h4>
             <div className="row justify-content-center">
               <div className="col-10">
                 <Table striped bordered hover>

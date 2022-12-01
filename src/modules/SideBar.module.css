@@ -1,8 +1,6 @@
 .sideBar {
   height: 100vh;
-  background-image: url("../image/HD-wallpaper-black-stylish-background-green-neon-lines-green-light-effects-abstract-black-background.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: #333;
   position: sticky;
   left: 0px;
   top: 0px;
@@ -10,7 +8,10 @@
 .sidebarLink {
   color: white;
   text-decoration: none;
+  font-family: "Inter", sans-serif;
 }
 .title {
   color: white;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }

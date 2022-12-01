@@ -7,6 +7,10 @@
   border: solid 1px #eaeaea;
   border-radius: 3px;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
 .inputName {
   width: 40%;
 }

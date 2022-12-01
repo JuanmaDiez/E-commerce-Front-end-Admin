@@ -7,4 +7,8 @@
 .createInput {
   width: 20%;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
 

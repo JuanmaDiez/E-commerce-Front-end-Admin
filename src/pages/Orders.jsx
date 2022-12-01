@@ -55,7 +55,7 @@ function Orders() {
             <SideBar />
           </div>
           <div className={`col-10`}>
-            <h4 className="m-3">Orders</h4>
+            <h4 className={`m-3 ${styles.title}`}>Orders</h4>
             <div className="row justify-content-center">
               <div className="col-10">
                 <Table striped bordered hover>

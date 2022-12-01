@@ -9,3 +9,7 @@
 .overviewBody {
   background-color: #f3f6f9;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}

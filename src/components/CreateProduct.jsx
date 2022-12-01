@@ -33,7 +33,7 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
     categories && (
       <div className={`${display} flex-column ${styles.createContainer} p-4`}>
         <div className="d-flex justify-content-between">
-          <h5>Create product</h5>
+          <h4 className={`${styles.title}`}>Create product</h4>
           <p
             onClick={() => {
               setBlur("blur(0px)");

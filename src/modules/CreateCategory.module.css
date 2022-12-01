@@ -19,3 +19,7 @@
 .inputSubtitle {
   width: 50%;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}

@@ -56,7 +56,7 @@ function EditProduct({
     categories && (
       <div className={`${display} flex-column ${styles.createContainer} p-4`}>
         <div className="d-flex justify-content-between m-2">
-          <h5>Edit product</h5>
+          <h4 className={`${styles.title}`}>Edit product</h4>
           <p
             onClick={() => {
               setDisplay("d-none");

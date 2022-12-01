@@ -51,7 +51,7 @@ function Login() {
             className={`${styles.logInForm}`}
             onSubmit={(event) => handleSubmit(event)}
           >
-            <h5>Log in</h5>
+            <h4 className={`${styles.title}`}>Log in</h4>
             <div className="form-group mb-2">
               <label for="exampleFormControlInput1">Email address</label>
               <input

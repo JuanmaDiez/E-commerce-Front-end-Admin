@@ -75,7 +75,7 @@ function Products() {
           </div>
           <div className="col-10" style={{ filter: `${blur}` }}>
             <div className="d-flex justify-content-between">
-              <h5 className="m-3">Products</h5>
+              <h4 className={`m-3 ${styles.title}`}>Products</h4>
               <img
                 src={newProduct}
                 alt="newProduct"

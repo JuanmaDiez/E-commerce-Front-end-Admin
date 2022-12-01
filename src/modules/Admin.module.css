@@ -5,3 +5,7 @@
   height: 32px;
   width: auto;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}

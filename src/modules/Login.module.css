@@ -33,4 +33,8 @@
   color: black;
   margin-left: 4px;
 }
+.title {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
 

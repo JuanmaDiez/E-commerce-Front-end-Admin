@@ -30,7 +30,7 @@ function CreateCategory({ display, setDisplay, setBlur }) {
   return (
     <div className={`${display} flex-column ${styles.createContainer}`}>
       <div className="d-flex justify-content-between m-3">
-        <h5>New category</h5>
+        <h4 className={`${styles.title}`}>New category</h4>
         <p
           onClick={() => {
             setDisplay("d-none");

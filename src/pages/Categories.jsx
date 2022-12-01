@@ -64,7 +64,7 @@ function Categories() {
           </div>
           <div className="col-10" style={{ filter: `${blur}` }}>
             <div className="d-flex justify-content-between m-2">
-              <h5 className="m-3">Categories</h5>
+              <h4 className={`m-3 ${styles.title}`}>Categories</h4>
               <img
                 src={newCategory}
                 alt="newCategory"
