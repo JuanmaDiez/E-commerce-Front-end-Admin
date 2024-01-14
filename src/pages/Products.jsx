@@ -20,6 +20,7 @@ function Products() {
   const [categories, setCategories] = useState(null);
   const [product, setProduct] = useState(null);
   const [featured, setFeatured] = useState(null);
+  const [displayModal, setDisplayModal] = useState("d-none");
   const [displayCreate, setDisplayCreate] = useState("d-none");
   const [displayEdit, setDisplayEdit] = useState("d-none");
   const [blur, setBlur] = useState("null");
@@ -80,6 +81,7 @@ function Products() {
                 src={newProduct}
                 alt="newProduct"
                 onClick={() => {
+                  setDisplayModal("d-flex");
                   setDisplayCreate("d-flex");
                   setBlur("blur(8px)");
                 }}
@@ -121,6 +123,7 @@ function Products() {
                               src={editTools}
                               alt="edit"
                               onClick={() => {
+                                setDisplayModal("d-flex");
                                 setDisplayEdit("d-flex");
                                 setBlur("blur(8px)");
                                 setProduct(product);
@@ -142,26 +145,29 @@ function Products() {
                   </tbody>
                 </Table>
               </div>
-              <div
-                className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
-              >
-                <CreateProduct
-                  display={displayCreate}
-                  setDisplay={setDisplayCreate}
-                  setBlur={setBlur}
-                  categories={categories}
-                />
-                <EditProduct
-                  display={displayEdit}
-                  setDisplay={setDisplayEdit}
-                  setBlur={setBlur}
-                  categories={categories}
-                  product={product}
-                  featured={featured}
-                  setFeatured={setFeatured}
-                  setProduct={setProduct}
-                />
-              </div>
+            </div>
+          </div>
+          <div className={`col-10`} style={{ display: `${displayModal}` }}>
+            <div className={`row`}></div>
+            <div
+              className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
+            >
+              <CreateProduct
+                display={displayCreate}
+                setDisplay={setDisplayCreate}
+                setBlur={setBlur}
+                categories={categories}
+              />
+              <EditProduct
+                display={displayEdit}
+                setDisplay={setDisplayEdit}
+                setBlur={setBlur}
+                categories={categories}
+                product={product}
+                featured={featured}
+                setFeatured={setFeatured}
+                setProduct={setProduct}
+              />
             </div>
           </div>
         </div>

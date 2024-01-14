@@ -16,17 +16,21 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
     const formData = new FormData(event.target);
     setBlur("blur(0px)");
     setDisplay("d-none");
-    const response = await axios({
-      url: `${process.env.REACT_APP_API_URL}/products`,
-      method: "POST",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${admin.token}`,
-      },
-    });
-    dispatch(add_product(response.data));
-    toast.success("Product created!");
+    try {
+      const response = await axios({
+        url: `${process.env.REACT_APP_API_URL}/products`,
+        method: "POST",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${admin.token}`,
+        },
+      });
+      dispatch(add_product(response.data));
+      toast.success("Product created!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
