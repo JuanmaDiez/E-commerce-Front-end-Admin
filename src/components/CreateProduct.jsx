@@ -21,7 +21,7 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
       method: "POST",
       data: formData,
       headers: {
-        //"Content-Type": "multipart/form-data",
+        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${admin.token}`,
       },
     });
