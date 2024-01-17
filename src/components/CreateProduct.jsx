@@ -50,6 +50,7 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
         <form
           action=""
           onSubmit={(event) => handleSubmit(event)}
+          encType="multipart/form-data"
           className="container"
         >
           <div className={`form-group mt-1`}>
