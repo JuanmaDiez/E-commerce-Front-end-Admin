@@ -23,23 +23,11 @@ function EditProduct({
   const [stock, setStock] = useState(null);
   const [price, setPrice] = useState(null);
 
-  const handleSubmit = async (event, id) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     setDisplay("d-none");
     setBlur("blur(0px)");
-    dispatch(
-      edit_product({
-        id,
-        name: name || product.name,
-        stock: stock || product.stock,
-        description: description || product.description,
-        price: price || product.price,
-        featured,
-      })
-    );
-    toast.warning("Product edited!");
-    setProduct(null);
     await axios({
       url: `${process.env.REACT_APP_API_URL}/products/${product._id}`,
       method: "PATCH",
@@ -49,6 +37,18 @@ function EditProduct({
         Authorization: `Bearer ${admin.token}`,
       },
     });
+    dispatch(
+      edit_product({
+        id: product._id,
+        name: name || product.name,
+        stock: stock || product.stock,
+        description: description || product.description,
+        price: price || product.price,
+        featured,
+      })
+    );
+    toast.warning("Product edited!");
+    setProduct(null);
   };
 
   return (
@@ -68,9 +68,9 @@ function EditProduct({
           </p>
         </div>
         <form
-          onSubmit={(event) => {
-            handleSubmit(event, product._id);
-          }}
+          action=""
+          onSubmit={(event) => handleSubmit(event)}
+          encType="multipart/form-data"
           className="container"
         >
           <div className={`form-group `}>
@@ -119,10 +119,6 @@ function EditProduct({
             })}
           </div>
           <div className={`form-group `}>
-            <label htmlFor="">Image</label>
-            <input type="file" className={`form-control`} name="image" />
-          </div>
-          <div className={`form-group `}>
             <label htmlFor="">Price</label>
             <input
               type="number"
@@ -151,6 +147,10 @@ function EditProduct({
               value={featured}
               name="featuredProduct"
             />
+          </div>
+          <div className={`form-group `}>
+            <label htmlFor="">Image</label>
+            <input type="file" className={`form-control`} name="image" />
           </div>
           <button type="submit" className="btn btn-success">
             Edit

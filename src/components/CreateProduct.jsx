@@ -80,12 +80,8 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
             </div>
           </div>
           <div className={`form-group mt-1`}>
-            <label htmlFor="">Image</label>
-            <input type="file" className={`form-control`} name="image" />
-            <div className={`form-group mt-1`}>
-              <label htmlFor="">Price</label>
-              <input type="number" className={`form-control`} name="price" />
-            </div>
+            <label htmlFor="">Price</label>
+            <input type="number" className={`form-control`} name="price" />
           </div>
           <div className={`form-group mt-1`}>
             <label htmlFor="">Stock</label>
@@ -100,6 +96,10 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
               value={featured}
               onChange={() => setFeatured(!featured)}
             />
+          </div>
+          <div className={`form-group mt-1`}>
+            <label htmlFor="">Image</label>
+            <input type="file" className={`form-control`} name="image" />
           </div>
           <button type="submit" className="btn btn-success mt-1">
             Create
