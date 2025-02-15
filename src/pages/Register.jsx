@@ -1,10 +1,15 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../modules/Register.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import { adminRegister } from "../controllers/adminController";
+import { USER_CREATED } from "../constants/successMessage";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/adminSlice";
 
 function Register() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -12,18 +17,37 @@ function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/admins`,
-      method: "POST",
-      data: { firstname, lastname, email, password },
-    });
-    navigate("/login");
+
+    const response = await adminRegister(firstname, lastname, email, password);
+
+    if (!response.success) {
+      toast.error(response.message);
+      return;
+    }
+
+    const admin = response.admin;
+    const token = response.token;
+    dispatch(login({ token, admin }));
+    toast.success(USER_CREATED);
+    navigate("/");
   };
 
   return (
     <div
       className={`${styles.registerContainer} d-flex justify-content-center align-items-center`}
     >
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        newestOnTop={true}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <form
         onSubmit={handleSubmit}
         className={`${styles.registerForm} d-flex flex-column justify-content-between align-items-start p-3`}
