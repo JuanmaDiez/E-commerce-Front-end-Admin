@@ -12,12 +12,16 @@ import newProduct from "../image/new.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Table from "react-bootstrap/Table";
+import { productIndex } from "../controllers/productController";
+import { Spinner } from "react-bootstrap";
+import { categoryIndex } from "../controllers/categoryController";
 
 function Products() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.product);
   const admin = useSelector((state) => state.admin);
   const [categories, setCategories] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [product, setProduct] = useState(null);
   const [featured, setFeatured] = useState(null);
   const [displayModal, setDisplayModal] = useState("d-none");
@@ -26,22 +30,32 @@ function Products() {
   const [blur, setBlur] = useState("null");
 
   useEffect(() => {
+    setIsLoading(true);
     const getProducts = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/products`,
-        method: "GET",
-      });
-      dispatch(call_products(response.data));
+      const response = await productIndex();
+
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      dispatch(call_products(response.products));
     };
+
     const getCategories = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/categories`,
-        method: "GET",
-      });
-      setCategories(response.data);
+      const response = await categoryIndex();
+
+      if (!response.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      setCategories(response.categories);
     };
+
     getCategories();
     getProducts();
+    setIsLoading(false);
   }, []);
 
   const handleClick = async (id) => {
@@ -50,46 +64,70 @@ function Products() {
     await axios({
       url: `${process.env.REACT_APP_API_URL}/products/${id}`,
       method: "DELETE",
-      headers: { Authorization: `Bearer ${admin.token}` },
+      headers: { Authorization: `Bearer ${admin.token}` }
     });
   };
 
-  return (
-    products.length &&
-    categories && (
-      <div className="container-fluid">
-        <div className={`row`}>
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={true}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          <div className="col-2 p-0">
-            <SideBar />
+  return isLoading ? (
+    <div className="container-fluid">
+      <div className={`row`}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <div className="col-2 p-0">
+          <SideBar />
+        </div>
+        <div className="col-10" style={{ filter: `${blur}` }}>
+          <div className="d-flex justify-content-center align-items-center">
+            <Spinner />
           </div>
-          <div className="col-10" style={{ filter: `${blur}` }}>
-            <div className="d-flex justify-content-between">
-              <h4 className={`m-3 ${styles.title}`}>Products</h4>
-              <img
-                src={newProduct}
-                alt="newProduct"
-                onClick={() => {
-                  setDisplayModal("d-flex");
-                  setDisplayCreate("d-flex");
-                  setBlur("blur(8px)");
-                }}
-                className="m-3"
-              />
-            </div>
-            <div className="row justify-content-center">
-              <div className="col-10">
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="container-fluid">
+      <div className={`row`}>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
+        <div className="col-2 p-0">
+          <SideBar />
+        </div>
+        <div className="col-10" style={{ filter: `${blur}` }}>
+          <div className="d-flex justify-content-between">
+            <h4 className={`m-3 ${styles.title}`}>Products</h4>
+            <img
+              src={newProduct}
+              alt="newProduct"
+              onClick={() => {
+                setDisplayModal("d-flex");
+                setDisplayCreate("d-flex");
+                setBlur("blur(8px)");
+              }}
+              className="m-3"
+            />
+          </div>
+          <div className="row justify-content-center">
+            <div className="col-10">
+              {products.length > 0 ? (
                 <Table striped bordered hover>
                   <thead className="thead-light">
                     <tr>
@@ -110,7 +148,7 @@ function Products() {
                           className={`${styles.productRow}`}
                           style={{
                             backgroundColor:
-                              product.stock === 0 ? "#FFD3D3" : "inherit",
+                              product.stock === 0 ? "#FFD3D3" : "inherit"
                           }}
                         >
                           <th>{index + 1}</th>
@@ -144,35 +182,39 @@ function Products() {
                     })}
                   </tbody>
                 </Table>
-              </div>
-            </div>
-          </div>
-          <div className={`col-10`} style={{ display: `${displayModal}` }}>
-            <div className={`row`}></div>
-            <div
-              className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
-            >
-              <CreateProduct
-                display={displayCreate}
-                setDisplay={setDisplayCreate}
-                setBlur={setBlur}
-                categories={categories}
-              />
-              <EditProduct
-                display={displayEdit}
-                setDisplay={setDisplayEdit}
-                setBlur={setBlur}
-                categories={categories}
-                product={product}
-                featured={featured}
-                setFeatured={setFeatured}
-                setProduct={setProduct}
-              />
+              ) : (
+                <div className="d-flex justify-content-center align-items-center">
+                  <h3>No se encontraron productos</h3>
+                </div>
+              )}
             </div>
           </div>
         </div>
+        <div className={`col-10`} style={{ display: `${displayModal}` }}>
+          <div className={`row`}></div>
+          <div
+            className={`col-12 d-flex justify-content-center ${styles.modalContainer}`}
+          >
+            <CreateProduct
+              display={displayCreate}
+              setDisplay={setDisplayCreate}
+              setBlur={setBlur}
+              categories={categories}
+            />
+            <EditProduct
+              display={displayEdit}
+              setDisplay={setDisplayEdit}
+              setBlur={setBlur}
+              categories={categories}
+              product={product}
+              featured={featured}
+              setFeatured={setFeatured}
+              setProduct={setProduct}
+            />
+          </div>
+        </div>
       </div>
-    )
+    </div>
   );
 }
 
