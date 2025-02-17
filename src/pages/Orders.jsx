@@ -8,20 +8,30 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
+import { orderIndex } from "../controllers/orderController";
+import { logout } from "../redux/adminSlice";
+import { useNavigate } from "react-router-dom";
 
 function Orders() {
   const orders = useSelector((state) => state.order);
   const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getOrders = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/orders`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${admin.token}` },
-      });
-      dispatch(call_orders(response.data));
+      const response = await orderIndex(admin.token);
+
+      if (!response.success) {
+        if (response.unauthorized) {
+          dispatch(logout());
+          navigate("/login");
+        }
+        toast.error(response.message);
+        return;
+      }
+
+      dispatch(call_orders(response.orders));
     };
     getOrders();
   }, []);

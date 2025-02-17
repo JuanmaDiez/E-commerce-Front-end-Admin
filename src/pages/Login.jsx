@@ -1,11 +1,11 @@
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { login } from "../redux/adminSlice";
 import styles from "../modules/Login.module.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { adminLogin } from "../controllers/adminController";
 
 function Login() {
   const navigate = useNavigate();
@@ -13,22 +13,20 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const getToken = async () => {
-      try {
-        const response = await axios({
-          url: `${process.env.REACT_APP_API_URL}/admins/login`,
-          method: "POST",
-          data: { email, password },
-        });
-        dispatch(login(response.data));
-        navigate("/");
-      } catch (error) {
-        toast.error("Incorrect email or password");
-      }
-    };
-    getToken();
+    const response = await adminLogin(email, password);
+
+    if (!response.success) {
+      toast.error(response.message);
+      return;
+    }
+
+    const admin = response.admin;
+    const token = response.token;
+
+    dispatch(login({ admin, token }));
+    navigate("/");
   };
 
   return (
@@ -53,7 +51,7 @@ function Login() {
           >
             <h4 className={`${styles.title}`}>Log in</h4>
             <div className="form-group mb-2">
-              <label for="exampleFormControlInput1">Email address</label>
+              <label htmlFor="exampleFormControlInput1">Email address</label>
               <input
                 type="text"
                 className={styles.inputLogin + " form-control"}
@@ -64,7 +62,7 @@ function Login() {
               />
             </div>
             <div className="form-group mb-2">
-              <label for="exampleFormControlInput2">Password</label>
+              <label htmlFor="exampleFormControlInput2">Password</label>
               <input
                 type="password"
                 className={styles.inputLogin + " form-control"}
