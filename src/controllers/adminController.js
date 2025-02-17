@@ -5,9 +5,14 @@ import {
   GET,
   LOGIN_URL,
   POST,
+  STATUS_NOT_FOUND,
   STATUS_UNAUTHORIZED
 } from "../constants/constants";
-import { SERVER_ERROR, UNAUTHORIZED } from "../constants/errorMessages";
+import {
+  NO_CONTENT,
+  SERVER_ERROR,
+  UNAUTHORIZED
+} from "../constants/errorMessages";
 
 async function adminRegister(firstname, lastname, email, password) {
   if (!firstname || !lastname || !email || !password)
@@ -61,7 +66,7 @@ async function adminLogin(email, password) {
 
     const errorResponse = error.response;
 
-    return { success: false, message: errorResponse.message };
+    return { success: false, message: errorResponse.data.message };
   }
 
   if (!response) return { success: false, message: SERVER_ERROR };
@@ -90,6 +95,12 @@ async function adminIndex(token) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
 
     const errorResponse = error.response;
+
+    if (errorResponse.status === STATUS_UNAUTHORIZED)
+      return { success: false, message: UNAUTHORIZED, unauthorized: true };
+
+    if (errorResponse.status === STATUS_NOT_FOUND)
+      return { success: false, message: NO_CONTENT };
 
     return { success: false, message: errorResponse.data.message };
   }
@@ -123,7 +134,7 @@ async function adminDelete(token, id) {
     if (errorResponse.status === STATUS_UNAUTHORIZED)
       return { success: false, message: UNAUTHORIZED, unauthorized: true };
 
-    return { success: false, message: errorResponse.message };
+    return { success: false, message: errorResponse.data.message };
   }
 
   if (!response) return { success: false, message: SERVER_ERROR };

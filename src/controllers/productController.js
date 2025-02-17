@@ -1,6 +1,17 @@
 import axios from "axios";
-import { GET, PRODUCTS_URL, STATUS_NOT_FOUND } from "../constants/constants";
-import { NO_CONTENT, SERVER_ERROR } from "../constants/errorMessages";
+import {
+  GET,
+  POST,
+  PRODUCTS_URL,
+  STATUS_NOT_FOUND,
+  STATUS_UNAUTHORIZED
+} from "../constants/constants";
+import {
+  INSUFFICIENT_DATA,
+  NO_CONTENT,
+  SERVER_ERROR,
+  UNAUTHORIZED
+} from "../constants/errorMessages";
 
 async function productIndex() {
   let response;
@@ -18,7 +29,7 @@ async function productIndex() {
     if (errorResponse.status === STATUS_NOT_FOUND)
       return { success: false, message: NO_CONTENT };
 
-    return { success: false, message: SERVER_ERROR };
+    return { success: false, message: errorResponse.data.message };
   }
 
   if (!response) return { success: false, message: SERVER_ERROR };
@@ -29,4 +40,41 @@ async function productIndex() {
   return { success: true, products };
 }
 
-export { productIndex };
+async function productStore(token, formData) {
+  if (!token || !formData) return { success: false, message: SERVER_ERROR };
+
+  for (const value of formData.values()) {
+    if (!value) return { success: false, message: INSUFFICIENT_DATA };
+  }
+
+  let response;
+
+  try {
+    response = await axios({
+      url: PRODUCTS_URL,
+      method: POST,
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`
+      }
+    });
+  } catch (error) {
+    if (!error.response) return { success: false, message: SERVER_ERROR };
+
+    const errorResponse = error.response;
+
+    if (errorResponse.status === STATUS_UNAUTHORIZED)
+      return { success: false, message: UNAUTHORIZED, unauthorized: true };
+
+    return { success: false, message: errorResponse.data.message };
+  }
+
+  if (!response) return { success: false, message: SERVER_ERROR };
+
+  const data = response.data;
+  const product = data.product;
+
+  return { success: true, product };
+}
+
+export { productIndex, productStore };
