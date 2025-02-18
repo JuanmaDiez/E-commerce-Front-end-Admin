@@ -58,14 +58,15 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
     <div className={`${display} flex-column ${styles.createContainer} p-4`}>
       <div className="d-flex justify-content-between">
         <h4 className={`${styles.title}`}>Create product</h4>
-        <p
+        <button
+          className="btn btn-dark"
           onClick={() => {
             setBlur("blur(0px)");
             setDisplay("d-none");
           }}
         >
           <strong>X</strong>
-        </p>
+        </button>
       </div>
       <form
         action=""

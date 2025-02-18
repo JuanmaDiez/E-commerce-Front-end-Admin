@@ -1,6 +1,8 @@
 import axios from "axios";
 import {
+  DELETE,
   GET,
+  PATCH,
   POST,
   PRODUCT_IMAGE_INPUT_NAME,
   PRODUCTS_URL,
@@ -82,4 +84,78 @@ async function productStore(token, formData) {
   return { success: true, product };
 }
 
-export { productIndex, productStore };
+async function productEdit(token, id, formData) {
+  if (!token || !id || !formData)
+    return { success: false, message: SERVER_ERROR };
+
+  let response;
+
+  try {
+    response = await axios({
+      url: `${PRODUCTS_URL}/${id}`,
+      method: PATCH,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data"
+      },
+      data: formData
+    });
+  } catch (error) {
+    if (!error.response) return { success: false, message: SERVER_ERROR };
+
+    const errorResponse = error.response;
+
+    if (errorResponse.status === STATUS_UNAUTHORIZED)
+      return { success: false, message: UNAUTHORIZED, unauthorized: true };
+
+    if (errorResponse.status === STATUS_NOT_FOUND)
+      return {
+        success: false,
+        message: SERVER_ERROR,
+        serverError: true
+      };
+
+    return { success: false, message: errorResponse.data.message };
+  }
+
+  if (!response) return { success: false, message: SERVER_ERROR };
+
+  const data = response.data;
+  const product = data.product;
+
+  return { success: true, product };
+}
+
+async function productDelete(token, id) {
+  if (!token || !id) return { success: false, message: SERVER_ERROR };
+
+  let response;
+
+  try {
+    response = await axios({
+      url: `${PRODUCTS_URL}/${id}`,
+      method: DELETE,
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  } catch (error) {
+    if (!error.response) return { success: false, message: SERVER_ERROR };
+
+    const errorResponse = error.response;
+
+    if (errorResponse.status === STATUS_UNAUTHORIZED)
+      return { success: false, message: UNAUTHORIZED, unauthorized: true };
+
+    if (errorResponse.status === STATUS_NOT_FOUND)
+      return { success: false, message: SERVER_ERROR, serverError: true };
+
+    return { success: false, message: errorResponse.data.message };
+  }
+
+  if (!response) return { success: false, message: SERVER_ERROR };
+
+  return { success: true };
+}
+
+export { productIndex, productStore, productEdit, productDelete };

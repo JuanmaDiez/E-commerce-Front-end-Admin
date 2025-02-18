@@ -1,23 +1,33 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CreateProduct from "../components/CreateProduct";
 import EditProduct from "../components/EditProduct";
 import SideBar from "../components/SideBar";
-import { call_products, delete_product } from "../redux/productsSlice";
+import {
+  call_products,
+  delete_product,
+  empty_products
+} from "../redux/productsSlice";
 import styles from "../modules/Products.module.css";
 import paperBasket from "../image/paperBasket.png";
 import editTools from "../image/editTools.png";
-import newProduct from "../image/new.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Table from "react-bootstrap/Table";
-import { productIndex } from "../controllers/productController";
+import { productDelete, productIndex } from "../controllers/productController";
 import { Spinner } from "react-bootstrap";
 import { categoryIndex } from "../controllers/categoryController";
+import { empty_admins } from "../redux/allAdminsSlice";
+import { empty_categories } from "../redux/categorySlice";
+import { empty_orders } from "../redux/ordersSlice";
+import { useNavigate } from "react-router-dom";
+import { LOGIN_URL } from "../constants/constants";
+import { PRODUCT_DELETED } from "../constants/successMessage";
+import { logout } from "../redux/adminSlice";
 
 function Products() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const products = useSelector((state) => state.product);
   const admin = useSelector((state) => state.admin);
   const [categories, setCategories] = useState(null);
@@ -59,13 +69,27 @@ function Products() {
   }, []);
 
   const handleClick = async (id) => {
+    setIsLoading(true);
+
+    const response = await productDelete(admin.token, id);
+
+    if (!response.success) {
+      if (response.serverError || response.unauthorized) {
+        dispatch(logout());
+        dispatch(empty_admins());
+        dispatch(empty_products());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        navigate(LOGIN_URL);
+      }
+      toast.error(response.message);
+      setIsLoading(false);
+      return;
+    }
+
     dispatch(delete_product(id));
-    toast.error("Product deleted");
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/products/${id}`,
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${admin.token}` }
-    });
+    toast.error(PRODUCT_DELETED);
+    setIsLoading(false);
   };
 
   return isLoading ? (
@@ -87,7 +111,10 @@ function Products() {
           <SideBar />
         </div>
         <div className="col-10" style={{ filter: `${blur}` }}>
-          <div className="d-flex justify-content-center align-items-center">
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ height: "100vh" }}
+          >
             <Spinner />
           </div>
         </div>
@@ -114,16 +141,16 @@ function Products() {
         <div className="col-10" style={{ filter: `${blur}` }}>
           <div className="d-flex justify-content-between">
             <h4 className={`m-3 ${styles.title}`}>Products</h4>
-            <img
-              src={newProduct}
-              alt="newProduct"
+            <button
+              className={`btn btn-success ${styles.createProdBtn}`}
               onClick={() => {
                 setDisplayModal("d-flex");
                 setDisplayCreate("d-flex");
                 setBlur("blur(8px)");
               }}
-              className="m-3"
-            />
+            >
+              <strong>+</strong>
+            </button>
           </div>
           <div className="row justify-content-center">
             <div className="col-10">
@@ -157,7 +184,7 @@ function Products() {
                           <td>${product.price}</td>
                           <td>
                             <img
-                              className="img-fluid me-3"
+                              className={`img-fluid me-3 ${styles.ctaImages}`}
                               src={editTools}
                               alt="edit"
                               onClick={() => {
@@ -172,7 +199,7 @@ function Products() {
                               onClick={() => {
                                 handleClick(product._id);
                               }}
-                              className={`${styles.paperBasket} img-fluid`}
+                              className={`${styles.paperBasket} img-fluid ${styles.ctaImages}`}
                               src={paperBasket}
                               alt="delete"
                             />

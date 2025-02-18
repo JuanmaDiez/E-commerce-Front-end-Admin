@@ -9,3 +9,13 @@
   font-family: "Inter", sans-serif;
   font-weight: 600;
 }
+.createProdBtn {
+  align-self: center;
+  font-size: 20px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  line-height: 20px;
+}
+.ctaImages {
+  cursor: pointer;
+}
