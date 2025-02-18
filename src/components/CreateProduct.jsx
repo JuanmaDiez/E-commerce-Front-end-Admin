@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../modules/CreateProduct.module.css";
@@ -13,6 +12,7 @@ import { empty_categories } from "../redux/categorySlice";
 import { empty_orders } from "../redux/ordersSlice";
 import { LOGIN_URL } from "../constants/constants";
 import { Spinner } from "react-bootstrap";
+import { PRODUCT_CREATED } from "../constants/successMessage";
 
 function CreateProduct({ display, setDisplay, setBlur, categories }) {
   const admin = useSelector((state) => state.admin);
@@ -36,22 +36,25 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
         dispatch(empty_orders());
         navigate(LOGIN_URL);
       }
+      setIsLoading(false);
       toast.error(response.message);
       return;
     }
 
     dispatch(add_product(response.product));
-    toast.success();
+    toast.success(PRODUCT_CREATED);
     setIsLoading(false);
     setBlur("blur(0px)");
     setDisplay("d-none");
   };
 
   return isLoading ? (
-    <div className={`${display} flex-column ${styles.createContainer} p-4`}>
+    <div
+      className={`${display} flex-column ${styles.createContainer} p-4 align-items-center justify-content-center`}
+    >
       <Spinner />
     </div>
-  ) : categories.length > 0 ? (
+  ) : categories && categories.length > 0 ? (
     <div className={`${display} flex-column ${styles.createContainer} p-4`}>
       <div className="d-flex justify-content-between">
         <h4 className={`${styles.title}`}>Create product</h4>

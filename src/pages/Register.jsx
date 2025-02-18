@@ -6,6 +6,7 @@ import { adminRegister } from "../controllers/adminController";
 import { USER_CREATED } from "../constants/successMessage";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/adminSlice";
+import { LOGIN_URL } from "../constants/constants";
 
 function Register() {
   const navigate = useNavigate();
@@ -97,7 +98,7 @@ function Register() {
           </button>
           <p className="mt-2">
             Already registered?{" "}
-            <Link to="/login" className={styles.registerLink}>
+            <Link to={LOGIN_URL} className={styles.registerLink}>
               Log in here
             </Link>
           </p>

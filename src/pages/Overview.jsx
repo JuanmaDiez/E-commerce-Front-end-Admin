@@ -45,7 +45,7 @@ function Overview() {
           dispatch(empty_categories());
           dispatch(empty_orders());
           dispatch(empty_products());
-          navigate("/login");
+          navigate(LOGIN_URL);
         }
         toast.error(response.message);
         return;

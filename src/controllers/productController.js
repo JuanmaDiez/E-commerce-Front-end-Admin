@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   GET,
   POST,
+  PRODUCT_IMAGE_INPUT_NAME,
   PRODUCTS_URL,
   STATUS_NOT_FOUND,
   STATUS_UNAUTHORIZED
@@ -47,6 +48,9 @@ async function productStore(token, formData) {
     if (!value) return { success: false, message: INSUFFICIENT_DATA };
   }
 
+  if (!formData.get(PRODUCT_IMAGE_INPUT_NAME).name)
+    return { success: false, message: INSUFFICIENT_DATA };
+
   let response;
 
   try {
@@ -56,7 +60,8 @@ async function productStore(token, formData) {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`
-      }
+      },
+      data: formData
     });
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
