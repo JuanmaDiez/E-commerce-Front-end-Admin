@@ -1,40 +1,70 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
-import { call_admins, delete_admin } from "../redux/allAdminsSlice";
+import {
+  call_admins,
+  delete_admin,
+  empty_admins,
+} from "../redux/allAdminsSlice";
 import styles from "../modules/Admin.module.css";
 import paperBasket from "../image/paperBasket.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Table } from "react-bootstrap";
+import { empty_products } from "../redux/productsSlice";
+import { empty_categories } from "../redux/categorySlice";
+import { empty_orders } from "../redux/ordersSlice";
+import { logout } from "../redux/adminSlice";
+import { adminDelete, adminIndex } from "../controllers/adminController";
+import { useNavigate } from "react-router-dom";
 
 function Admins() {
   const admin = useSelector((state) => state.admin);
   const allAdmins = useSelector((state) => state.allAdmin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAdmins = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/admins`,
-        method: "GET",
-        headers: { Authorization: `Bearer ${admin.token}` },
-      });
+      const response = await adminIndex(admin.token);
 
-      dispatch(call_admins(response.data));
+      if (!response.success) {
+        if (response.unauthorized) {
+          dispatch(empty_products());
+          dispatch(empty_admins());
+          dispatch(empty_categories());
+          dispatch(empty_orders());
+          dispatch(logout());
+          navigate("/login");
+        }
+        toast.error(response.message);
+        return;
+      }
+
+      dispatch(call_admins(response.admins));
+      toast.success(response.message);
     };
     getAdmins();
   }, []);
 
   const handleClick = async (id) => {
+    const response = await adminDelete(admin.token, id);
+
+    if (!response.success) {
+      if (response.unauthorized) {
+        dispatch(empty_products());
+        dispatch(empty_admins());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        dispatch(logout());
+        navigate("/login");
+      }
+      toast.error(response.message);
+      return;
+    }
+
     dispatch(delete_admin(id));
-    toast.error("Admin deleted");
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/admins/${id}`,
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${admin.token}` },
-    });
+    toast.success("Admin deleted!");
   };
 
   return (
@@ -62,7 +92,9 @@ function Admins() {
               <div className="col-10">
                 <Table striped bordered hover>
                   <thead className="thead-light">
-                    <th scope="row" className="col-1">#</th>
+                    <th scope="row" className="col-1">
+                      #
+                    </th>
                     <th className="col-2">Firstname</th>
                     <th className="col-2">Lastname</th>
                     <th className="col-2">Email</th>

@@ -2,13 +2,14 @@ import axios from "axios";
 import {
   NO_CONTENT,
   SERVER_ERROR,
-  UNAUTHORIZED
+  UNAUTHORIZED,
 } from "../constants/errorMessages";
 import {
   GET,
   ORDERS_URL,
+  PATCH,
   STATUS_NOT_FOUND,
-  STATUS_UNAUTHORIZED
+  STATUS_UNAUTHORIZED,
 } from "../constants/constants";
 
 async function orderIndex(token) {
@@ -21,8 +22,8 @@ async function orderIndex(token) {
       url: ORDERS_URL,
       method: GET,
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
@@ -45,4 +46,37 @@ async function orderIndex(token) {
   return { success: true, orders };
 }
 
-export { orderIndex };
+async function orderEdit(token, id) {
+  if (!token || !id) return { success: false, message: SERVER_ERROR };
+
+  try {
+    const response = await axios({
+      url: ORDERS_URL + "/" + id,
+      method: PATCH,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response) return { success: false, message: SERVER_ERROR };
+
+    const data = response.data;
+    const order = data.order;
+
+    return { success: true, order };
+  } catch (error) {
+    if (!error.response) return { success: false, message: SERVER_ERROR };
+
+    const errorResponse = error.response;
+
+    if (errorResponse.status === STATUS_UNAUTHORIZED)
+      return { success: false, message: UNAUTHORIZED, unauthorized: true };
+
+    if (errorResponse.status === STATUS_NOT_FOUND)
+      return { success: false, message: NO_CONTENT };
+
+    return { success: false, message: SERVER_ERROR };
+  }
+}
+
+export { orderIndex, orderEdit };

@@ -56,7 +56,6 @@ function Overview() {
     getOrders();
 
     const getProducts = async () => {
-      console.log("hola");
       const response = await productIndex();
 
       if (!response.success) {

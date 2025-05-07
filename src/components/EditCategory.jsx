@@ -5,6 +5,7 @@ import styles from "../modules/EditCategory.module.css";
 import { edit_category } from "../redux/categorySlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { categoryEdit } from "../controllers/categoryController";
 
 function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
   const admin = useSelector((state) => state.admin);
@@ -19,30 +20,27 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    const response = await categoryEdit(token, category._id, formData);
+
+    if (!response.success) {
+      if (response.unauthorized) {
+        dispatch(empty_admins());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        dispatch(empty_products());
+        dispatch(logout());
+        navigate("/login");
+      }
+      toast.error(response.message);
+      return;
+    }
+
     setBlur("blur(0px)");
     setDisplay("d-none");
-    dispatch(
-      edit_category({
-        id: category._id,
-        name: name || category.name,
-        title: title || category.title,
-        subtitle: subtitle || category.subtitle,
-        tip: tip || category.tip,
-        incentive: incentive || category.incentive,
-        description: description || category.description,
-      })
-    );
+    dispatch(edit_category(response.category));
     toast.warning("Category edited");
     setCategory(null);
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/categories/${category._id}`,
-      method: "PATCH",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${admin.token}`,
-      },
-    });
   };
 
   return (

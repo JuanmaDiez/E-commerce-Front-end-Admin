@@ -4,6 +4,7 @@ import { add_category } from "../redux/categorySlice";
 import styles from "../modules/CreateCategory.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { categoryStore } from "../controllers/categoryController";
 
 function CreateCategory({ display, setDisplay, setBlur }) {
   const admin = useSelector((state) => state.admin);
@@ -12,19 +13,26 @@ function CreateCategory({ display, setDisplay, setBlur }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+
+    const response = await categoryStore(admin.token, formData);
+
+    if (!response.success) {
+      if (response.unauthorized) {
+        dispatch(empty_admins());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        dispatch(empty_products());
+        dispatch(logout());
+        navigate("/login");
+      }
+      toast.error(response.message);
+      return;
+    }
+
+    dispatch(add_category(response.category));
     setDisplay("d-none");
     setBlur("blur(0px)");
-    toast.success("Category created!")
-    const response = await axios({
-      url: `${process.env.REACT_APP_API_URL}/categories`,
-      method: "POST",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${admin.token}`,
-      },
-    });
-    dispatch(add_category(response.data));
+    toast.success("Category created!");
   };
 
   return (

@@ -3,14 +3,17 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
 import styles from "../modules/Home.module.css";
-import { call_orders, edit_order } from "../redux/ordersSlice";
+import { call_orders, edit_order, empty_orders } from "../redux/ordersSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { format } from "date-fns";
 import Table from "react-bootstrap/Table";
-import { orderIndex } from "../controllers/orderController";
+import { orderEdit, orderIndex } from "../controllers/orderController";
 import { logout } from "../redux/adminSlice";
 import { useNavigate } from "react-router-dom";
+import { empty_admins } from "../redux/allAdminsSlice";
+import { empty_categories } from "../redux/categorySlice";
+import { empty_products } from "../redux/productsSlice";
 
 function Orders() {
   const orders = useSelector((state) => state.order);
@@ -24,6 +27,10 @@ function Orders() {
 
       if (!response.success) {
         if (response.unauthorized) {
+          dispatch(empty_admins());
+          dispatch(empty_categories());
+          dispatch(empty_orders());
+          dispatch(empty_products());
           dispatch(logout());
           navigate("/login");
         }
@@ -37,13 +44,23 @@ function Orders() {
   }, []);
 
   const handleClick = async (id) => {
+    const response = await orderEdit(admin.token, id);
+
+    if (!response.success) {
+      if (response.unauthorized) {
+        dispatch(empty_admins());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        dispatch(empty_products());
+        dispatch(logout());
+        navigate("/login");
+      }
+      toast.error(response.message);
+      return;
+    }
+
     dispatch(edit_order({ id }));
     toast.success("Succesfully changed state!");
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/orders/${id}`,
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${admin.token}` },
-    });
   };
   return (
     orders.length && (

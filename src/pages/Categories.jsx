@@ -12,10 +12,16 @@ import newCategory from "../image/new.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Table } from "react-bootstrap";
+import {
+  categoryDelete,
+  categoryIndex,
+} from "../controllers/categoryController";
+import { useNavigate } from "react-router-dom";
 
 function Categories() {
   const categories = useSelector((state) => state.category);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const admin = useSelector((state) => state.admin);
   const [displayEdit, setDisplayEdit] = useState("d-none");
   const [blur, setBlur] = useState("null");
@@ -24,23 +30,45 @@ function Categories() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const response = await axios({
-        url: `${process.env.REACT_APP_API_URL}/categories`,
-        method: "GET",
-      });
-      dispatch(call_categories(response.data));
+      const response = await categoryIndex();
+
+      if (!response.success) {
+        if (response.unauthorized) {
+          dispatch(empty_products());
+          dispatch(empty_admins());
+          dispatch(empty_categories());
+          dispatch(empty_orders());
+          dispatch(logout());
+          navigate("/login");
+        }
+        toast.error(response.message);
+        return;
+      }
+
+      dispatch(call_categories(response.categories));
+      toast.success("Data loaded successfully");
     };
     getCategories();
   }, []);
 
   const handleClick = async (id) => {
+    const response = await categoryDelete(admin.token, id);
+
+    if (!response.success) {
+      if (response.unauthorized) {
+        dispatch(empty_products());
+        dispatch(empty_admins());
+        dispatch(empty_categories());
+        dispatch(empty_orders());
+        dispatch(logout());
+        navigate("/login");
+      }
+      toast.error(response.message);
+      return;
+    }
+
     dispatch(delete_category(id));
-    toast.error("Category deleted");
-    await axios({
-      url: `${process.env.REACT_APP_API_URL}/categories/${id}`,
-      method: "DELETE",
-      headers: `Bearer ${admin.token}`,
-    });
+    toast.success("Category deleted");
   };
 
   return (
@@ -79,7 +107,9 @@ function Categories() {
               <div className="col-10">
                 <Table striped bordered hover>
                   <thead className="thead-light">
-                    <th scope="row" className="col-1">#</th>
+                    <th scope="row" className="col-1">
+                      #
+                    </th>
                     <th className="col-2">Name</th>
                     <th className="col-2">Stock</th>
                     <th className="col-3">Title</th>
