@@ -7,13 +7,13 @@ import {
   PRODUCT_IMAGE_INPUT_NAME,
   PRODUCTS_URL,
   STATUS_NOT_FOUND,
-  STATUS_UNAUTHORIZED
+  STATUS_UNAUTHORIZED,
 } from "../constants/constants";
 import {
   INSUFFICIENT_DATA,
   NO_CONTENT,
   SERVER_ERROR,
-  UNAUTHORIZED
+  UNAUTHORIZED,
 } from "../constants/errorMessages";
 
 async function productIndex() {
@@ -22,7 +22,7 @@ async function productIndex() {
   try {
     response = await axios({
       url: PRODUCTS_URL,
-      method: GET
+      method: GET,
     });
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
@@ -43,28 +43,48 @@ async function productIndex() {
   return { success: true, products };
 }
 
-async function productStore(token, formData) {
+async function productStore(
+  token,
+  name,
+  description,
+  category,
+  price,
+  stock,
+  image,
+  featured
+) {
   if (!token || !formData) return { success: false, message: SERVER_ERROR };
 
-  for (const value of formData.values()) {
-    if (!value) return { success: false, message: INSUFFICIENT_DATA };
-  }
-
-  if (!formData.get(PRODUCT_IMAGE_INPUT_NAME).name)
+  if (!name || !description || !category || !price || !stock || !image)
     return { success: false, message: INSUFFICIENT_DATA };
 
-  let response;
+  const formData = new FormData();
+
+  formData.append("name", name);
+  formData.append("description", description);
+  formData.append("category", category);
+  formData.append("price", price);
+  formData.append("stock", stock);
+  formData.append("image", image);
+  formData.append("featured", featured);
 
   try {
-    response = await axios({
+    const response = await axios({
       url: PRODUCTS_URL,
       method: POST,
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
-      data: formData
+      data: formData,
     });
+
+    if (!response) return { success: false, message: SERVER_ERROR };
+
+    const data = response.data;
+    const product = data.product;
+
+    return { success: true, product };
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
 
@@ -75,31 +95,50 @@ async function productStore(token, formData) {
 
     return { success: false, message: errorResponse.data.message };
   }
-
-  if (!response) return { success: false, message: SERVER_ERROR };
-
-  const data = response.data;
-  const product = data.product;
-
-  return { success: true, product };
 }
 
-async function productEdit(token, id, formData) {
-  if (!token || !id || !formData)
-    return { success: false, message: SERVER_ERROR };
+async function productEdit(
+  token,
+  id,
+  name,
+  description,
+  category,
+  price,
+  stock,
+  image,
+  featured
+) {
+  if (!token || !id) return { success: false, message: SERVER_ERROR };
 
-  let response;
+  const formData = new FormData();
+
+  formData.append("name", name);
+  formData.append("description", description);
+  formData.append("category", category);
+  formData.append("price", price);
+  formData.append("stock", stock);
+  if (image) {
+    formData.append("image", image);
+  }
+  formData.append("featured", featured);
 
   try {
-    response = await axios({
+    const response = await axios({
       url: `${PRODUCTS_URL}/${id}`,
       method: PATCH,
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data"
+        "Content-Type": "multipart/form-data",
       },
-      data: formData
+      data: formData,
     });
+
+    if (!response) return { success: false, message: SERVER_ERROR };
+
+    const data = response.data;
+    const product = data.product;
+
+    return { success: true, product };
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
 
@@ -112,33 +151,28 @@ async function productEdit(token, id, formData) {
       return {
         success: false,
         message: SERVER_ERROR,
-        serverError: true
+        serverError: true,
       };
 
     return { success: false, message: errorResponse.data.message };
   }
-
-  if (!response) return { success: false, message: SERVER_ERROR };
-
-  const data = response.data;
-  const product = data.product;
-
-  return { success: true, product };
 }
 
 async function productDelete(token, id) {
   if (!token || !id) return { success: false, message: SERVER_ERROR };
 
-  let response;
-
   try {
-    response = await axios({
+    const response = await axios({
       url: `${PRODUCTS_URL}/${id}`,
       method: DELETE,
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
+
+    if (!response) return { success: false, message: SERVER_ERROR };
+
+    return { success: true };
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
 
@@ -152,10 +186,6 @@ async function productDelete(token, id) {
 
     return { success: false, message: errorResponse.data.message };
   }
-
-  if (!response) return { success: false, message: SERVER_ERROR };
-
-  return { success: true };
 }
 
 export { productIndex, productStore, productEdit, productDelete };

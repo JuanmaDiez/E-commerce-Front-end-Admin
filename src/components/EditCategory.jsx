@@ -1,27 +1,45 @@
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../modules/EditCategory.module.css";
-import { edit_category } from "../redux/categorySlice";
+import { edit_category, empty_categories } from "../redux/categorySlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { categoryEdit } from "../controllers/categoryController";
+import { empty_admins } from "../redux/allAdminsSlice";
+import { empty_orders } from "../redux/ordersSlice";
+import { empty_products } from "../redux/productsSlice";
+import { logout } from "../redux/adminSlice";
+import { useNavigate } from "react-router-dom";
 
 function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
   const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
-  const [name, setName] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [tip, setTip] = useState(null);
-  const [subtitle, setSubtitle] = useState(null);
-  const [incentive, setIncentive] = useState(null);
-  const [description, setDescription] = useState(null);
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+  const [tip, setTip] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [incentive, setIncentive] = useState("");
+  const [description, setDescription] = useState("");
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
 
-    const response = await categoryEdit(token, category._id, formData);
+    const response = await categoryEdit(
+      admin.token,
+      category._id,
+      name,
+      tip,
+      subtitle,
+      incentive,
+      description,
+      image1,
+      image2,
+      image3
+    );
 
     if (!response.success) {
       if (response.unauthorized) {
@@ -42,6 +60,17 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
     toast.warning("Category edited");
     setCategory(null);
   };
+
+  useEffect(() => {
+    if (category) {
+      setName(category.name);
+      setTitle(category.title);
+      setTip(category.tip);
+      setSubtitle(category.subtitle);
+      setIncentive(category.incentive);
+      setDescription(category.description);
+    }
+  }, [category]);
 
   return (
     category && (
@@ -69,7 +98,7 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
                 type="text"
                 className={`form-control`}
                 name="name"
-                defaultValue={category.name}
+                value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </div>
@@ -79,7 +108,7 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
                 type="text"
                 className={`form-control`}
                 name="title"
-                defaultValue={category.title}
+                value={title}
                 onChange={(event) => setTitle(event.target.value)}
               />
             </div>
@@ -91,7 +120,7 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
                 type="text"
                 className={`form-control`}
                 name="tip"
-                defaultValue={category.tip}
+                value={tip}
                 onChange={(event) => setTip(event.target.value)}
               />
             </div>
@@ -101,7 +130,7 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
                 type="text"
                 className={`form-control`}
                 name="subtitle"
-                defaultValue={category.subtitle}
+                value={subtitle}
                 onChange={(event) => setSubtitle(event.target.value)}
               />
             </div>
@@ -112,7 +141,7 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
               type="text"
               className={`form-control`}
               name="incentive"
-              defaultValue={category.incentive}
+              value={incentive}
               onChange={(event) => setIncentive(event.target.value)}
             />
           </div>
@@ -122,21 +151,48 @@ function EditCategory({ display, setDisplay, setBlur, category, setCategory }) {
               type="text"
               className={`form-control`}
               name="description"
-              defaultValue={category.description}
+              value={description}
               onChange={(event) => setDescription(event.target.value)}
             ></textarea>
           </div>
           <div className={`form-group mt-1`}>
             <label htmlFor="">Image 1</label>
-            <input type="file" className={`form-control`} name="image1" />
+            <input
+              type="file"
+              className={`form-control`}
+              name="image1"
+              onChange={(event) => {
+                if (event.target.files && event.target.files[0]) {
+                  setImage1(event.target.files[0]);
+                }
+              }}
+            />
           </div>
           <div className={`form-group mt-1`}>
             <label htmlFor="">Image 2</label>
-            <input type="file" className={`form-control`} name="image2" />
+            <input
+              type="file"
+              className={`form-control`}
+              name="image2"
+              onChange={(event) => {
+                if (event.target.files && event.target.files[0]) {
+                  setImage2(event.target.files[0]);
+                }
+              }}
+            />
           </div>
           <div className={`form-group mt-1`}>
             <label htmlFor="">Image 3</label>
-            <input type="file" className={`form-control`} name="image3" />
+            <input
+              type="file"
+              className={`form-control`}
+              name="image3"
+              onChange={(event) => {
+                if (event.target.files && event.target.files[0]) {
+                  setImage3(event.target.files[0]);
+                }
+              }}
+            />
           </div>
           <button type="submit" className="btn btn-success mt-1">
             Edit

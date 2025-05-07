@@ -2,7 +2,11 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SideBar from "../components/SideBar";
-import { call_categories, delete_category } from "../redux/categorySlice";
+import {
+  call_categories,
+  delete_category,
+  empty_categories,
+} from "../redux/categorySlice";
 import EditCategory from "../components/EditCategory";
 import styles from "../modules/Categories.module.css";
 import editTools from "../image/editTools.png";
@@ -17,6 +21,10 @@ import {
   categoryIndex,
 } from "../controllers/categoryController";
 import { useNavigate } from "react-router-dom";
+import { empty_products } from "../redux/productsSlice";
+import { empty_admins } from "../redux/allAdminsSlice";
+import { empty_orders } from "../redux/ordersSlice";
+import { logout } from "../redux/adminSlice";
 
 function Categories() {
   const categories = useSelector((state) => state.category);

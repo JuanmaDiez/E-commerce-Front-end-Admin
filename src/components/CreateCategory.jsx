@@ -1,20 +1,45 @@
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { add_category } from "../redux/categorySlice";
+import { add_category, empty_categories } from "../redux/categorySlice";
 import styles from "../modules/CreateCategory.module.css";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { categoryStore } from "../controllers/categoryController";
+import { empty_admins } from "../redux/allAdminsSlice";
+import { empty_orders } from "../redux/ordersSlice";
+import { empty_products } from "../redux/productsSlice";
+import { logout } from "../redux/adminSlice";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function CreateCategory({ display, setDisplay, setBlur }) {
   const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+  const [tip, setTip] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [incentive, setIncentive] = useState("");
+  const [description, setDescription] = useState("");
+  const [image1, setImage1] = useState(null);
+  const [image2, setImage2] = useState(null);
+  const [image3, setImage3] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
 
-    const response = await categoryStore(admin.token, formData);
+    const response = await categoryStore(
+      admin.token,
+      name,
+      title,
+      tip,
+      subtitle,
+      incentive,
+      description,
+      image1,
+      image2,
+      image3
+    );
 
     if (!response.success) {
       if (response.unauthorized) {
@@ -59,6 +84,8 @@ function CreateCategory({ display, setDisplay, setBlur }) {
               type="text"
               className={`form-control`}
               name="name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
               required
             />
           </div>
@@ -68,6 +95,8 @@ function CreateCategory({ display, setDisplay, setBlur }) {
               type="text"
               className={`form-control`}
               name="title"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
               required
             />
           </div>
@@ -75,7 +104,14 @@ function CreateCategory({ display, setDisplay, setBlur }) {
         <div className="d-flex">
           <div className={`form-group mt-1 me-5 ${styles.inputTip}`}>
             <label htmlFor="">Tip</label>
-            <input type="text" className={`form-control`} name="tip" />
+            <input
+              type="text"
+              className={`form-control`}
+              name="tip"
+              value={tip}
+              onChange={(event) => setTip(event.target.value)}
+              required
+            />
           </div>
           <div className={`form-group mt-1 ${styles.inputSubtitle}`}>
             <label htmlFor="">Subtitle</label>
@@ -83,6 +119,8 @@ function CreateCategory({ display, setDisplay, setBlur }) {
               type="text"
               className={`form-control`}
               name="subtitle"
+              value={subtitle}
+              onChange={(event) => setSubtitle(event.target.value)}
               required
             />
           </div>
@@ -93,6 +131,8 @@ function CreateCategory({ display, setDisplay, setBlur }) {
             type="text"
             className={`form-control`}
             name="incentive"
+            value={incentive}
+            onChange={(event) => setIncentive(event.target.value)}
             required
           />
         </div>
@@ -102,6 +142,8 @@ function CreateCategory({ display, setDisplay, setBlur }) {
             type="text"
             className={`form-control`}
             name="description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
             required
           ></textarea>
         </div>
@@ -111,6 +153,11 @@ function CreateCategory({ display, setDisplay, setBlur }) {
             type="file"
             className={`form-control`}
             name="image1"
+            onChange={(event) => {
+              if (event.target.files && event.target.files[0]) {
+                setImage1(event.target.files[0]);
+              }
+            }}
             required
           />
         </div>
@@ -120,6 +167,11 @@ function CreateCategory({ display, setDisplay, setBlur }) {
             type="file"
             className={`form-control`}
             name="image2"
+            onChange={(event) => {
+              if (event.target.files && event.target.files[0]) {
+                setImage2(event.target.files[0]);
+              }
+            }}
             required
           />
         </div>
@@ -129,6 +181,11 @@ function CreateCategory({ display, setDisplay, setBlur }) {
             type="file"
             className={`form-control`}
             name="image3"
+            onChange={(event) => {
+              if (event.target.files && event.target.files[0]) {
+                setImage3(event.target.files[0]);
+              }
+            }}
             required
           />
         </div>

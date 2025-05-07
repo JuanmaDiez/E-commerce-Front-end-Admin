@@ -18,14 +18,28 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
   const admin = useSelector((state) => state.admin);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState(null);
+  const [price, setPrice] = useState(null);
+  const [stock, setStock] = useState(null);
+  const [image, setImage] = useState(null);
   const [featured, setFeatured] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     setIsLoading(true);
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const response = await productStore(admin.token, formData);
+    const response = await productStore(
+      admin.token,
+      name,
+      description,
+      category,
+      price,
+      stock,
+      image,
+      featured
+    );
 
     if (!response.success) {
       if (response.unauthorized) {
@@ -71,16 +85,28 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
       <form
         action=""
         onSubmit={(event) => handleSubmit(event)}
-        encType="multipart/form-data"
         className="container"
       >
         <div className={`form-group mt-1`}>
           <label htmlFor="">Name</label>
-          <input type="text" className={`form-control`} name="name" />
+          <input
+            type="text"
+            className={`form-control`}
+            name="name"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+            required
+          />
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Description</label>
-          <textarea className={`form-control`} name="description"></textarea>
+          <textarea
+            className={`form-control`}
+            name="description"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            required
+          ></textarea>
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Category</label>
@@ -93,6 +119,9 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
                     type="radio"
                     className="ms-2"
                     value={category._id}
+                    onClick={(event) => {
+                      setCategory(event.target.value);
+                    }}
                     name="category"
                   />
                 </div>
@@ -102,11 +131,25 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Price</label>
-          <input type="number" className={`form-control`} name="price" />
+          <input
+            type="number"
+            className={`form-control`}
+            name="price"
+            value={price}
+            onChange={(event) => setPrice(event.target.value)}
+            required
+          />
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Stock</label>
-          <input type="number" className={`form-control`} name="stock" />
+          <input
+            type="number"
+            className={`form-control`}
+            name="stock"
+            value={stock}
+            onChange={(event) => setStock(event.target.value)}
+            required
+          />
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Featured</label>
@@ -120,7 +163,17 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
         </div>
         <div className={`form-group mt-1`}>
           <label htmlFor="">Image</label>
-          <input type="file" className={`form-control`} name="image" />
+          <input
+            type="file"
+            className={`form-control`}
+            name="image"
+            onChange={(event) => {
+              if (event.target.files && event.target.files[0]) {
+                setImage(event.target.files[0]);
+              }
+            }}
+            required
+          />
         </div>
         <button type="submit" className="btn btn-success mt-1">
           Create
