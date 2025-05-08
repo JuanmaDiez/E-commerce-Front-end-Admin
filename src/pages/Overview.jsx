@@ -96,7 +96,7 @@ function Overview() {
       await setDates(
         eachDayOfInterval({
           start: new Date(orders[0].createdAt),
-          end: new Date()
+          end: new Date(),
         }).map((date) => {
           return format(date, "yyyy-MM-dd");
         })
@@ -140,10 +140,10 @@ function Overview() {
               backgroundColor: "rgba(9, 129, 176, 0.2)",
               fill: {
                 target: "origin",
-                below: "rgba(234,234,234,0)"
-              }
-            }
-          ]
+                below: "rgba(234,234,234,0)",
+              },
+            },
+          ],
         });
     };
     getData();
@@ -186,9 +186,9 @@ function Overview() {
                   plugins: {
                     title: {
                       display: true,
-                      text: "Sales since e-commerce deployment"
-                    }
-                  }
+                      text: "Sales since e-commerce deployment",
+                    },
+                  },
                 }}
               />
             </div>

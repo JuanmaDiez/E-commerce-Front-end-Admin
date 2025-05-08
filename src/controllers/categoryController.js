@@ -71,7 +71,7 @@ async function categoryStore(
   image2,
   image3
 ) {
-  if (!token || !formData) return { success: false, message: SERVER_ERROR };
+  if (!token) return { success: false, message: SERVER_ERROR };
 
   if (
     !name ||

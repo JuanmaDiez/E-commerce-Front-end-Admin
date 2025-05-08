@@ -28,8 +28,8 @@ function CreateProduct({ display, setDisplay, setBlur, categories }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (event) => {
-    setIsLoading(true);
     event.preventDefault();
+    setIsLoading(true);
     const response = await productStore(
       admin.token,
       name,

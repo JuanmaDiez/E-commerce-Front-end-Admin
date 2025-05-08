@@ -4,7 +4,6 @@ import {
   GET,
   PATCH,
   POST,
-  PRODUCT_IMAGE_INPUT_NAME,
   PRODUCTS_URL,
   STATUS_NOT_FOUND,
   STATUS_UNAUTHORIZED,
@@ -53,9 +52,16 @@ async function productStore(
   image,
   featured
 ) {
-  if (!token || !formData) return { success: false, message: SERVER_ERROR };
+  if (!token) return { success: false, message: SERVER_ERROR };
 
-  if (!name || !description || !category || !price || !stock || !image)
+  if (
+    !name ||
+    !description ||
+    !category ||
+    !price ||
+    (!stock && !stock !== 0) ||
+    !image
+  )
     return { success: false, message: INSUFFICIENT_DATA };
 
   const formData = new FormData();
