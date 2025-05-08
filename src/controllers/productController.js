@@ -16,13 +16,18 @@ import {
 } from "../constants/errorMessages";
 
 async function productIndex() {
-  let response;
-
   try {
-    response = await axios({
+    const response = await axios({
       url: PRODUCTS_URL,
       method: GET,
     });
+
+    if (!response) return { success: false, message: SERVER_ERROR };
+
+    const data = response.data;
+    const products = data.products;
+
+    return { success: true, products };
   } catch (error) {
     if (!error.response) return { success: false, message: SERVER_ERROR };
 
@@ -33,13 +38,6 @@ async function productIndex() {
 
     return { success: false, message: errorResponse.data.message };
   }
-
-  if (!response) return { success: false, message: SERVER_ERROR };
-
-  const data = response.data;
-  const products = data.products;
-
-  return { success: true, products };
 }
 
 async function productStore(
